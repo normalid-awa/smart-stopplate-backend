@@ -7,7 +7,7 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "dev:graphql": "ts-node-dev --transpile-only --no-notify --exit-child src/index.ts",
         "dev:prisma": "npx ts-node src/script.ts",
-        "gen": "npx ts-node --transpile-only src/schema && graphql-codegen --config codegen.ts",
+        "gen": "npx ts-node --transpile-only src/schema &&npx prisma generate &&graphql-codegen --config codegen.ts",
         "ssl": "local-ssl-proxy --source 8081 --target 8080",
         "db:migrate": "npx prisma migrate dev --name "
     },
