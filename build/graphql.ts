@@ -27,9 +27,9 @@ export type Link = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createStage: Stages;
-  deleteStage: Stages;
-  lockStage: Stages;
+  createStage: Stage;
+  deleteStage: Stage;
+  lockStage: Stage;
 };
 
 
@@ -54,11 +54,17 @@ export type MutationLockStageArgs = {
 export type Query = {
   __typename?: 'Query';
   feed: Array<Link>;
-  getAllStages: Array<Stages>;
+  getAllStages: Array<Stage>;
+  getStage: Array<Stage>;
 };
 
-export type Stages = {
-  __typename?: 'Stages';
+
+export type QueryGetStageArgs = {
+  id: Scalars['Int']['input'];
+};
+
+export type Stage = {
+  __typename?: 'Stage';
   createdAt: Scalars['DateTime']['output'];
   description: Scalars['String']['output'];
   id: Scalars['Int']['output'];
@@ -148,7 +154,7 @@ export type ResolversTypes = {
   Link: ResolverTypeWrapper<Link>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
-  Stages: ResolverTypeWrapper<Stages>;
+  Stage: ResolverTypeWrapper<Stage>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
 };
 
@@ -160,7 +166,7 @@ export type ResolversParentTypes = {
   Link: Link;
   Mutation: {};
   Query: {};
-  Stages: Stages;
+  Stage: Stage;
   String: Scalars['String']['output'];
 };
 
@@ -176,17 +182,18 @@ export type LinkResolvers<ContextType = any, ParentType extends ResolversParentT
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  createStage?: Resolver<ResolversTypes['Stages'], ParentType, ContextType, RequireFields<MutationCreateStageArgs, 'description' | 'name' | 'noShoots' | 'paperTargets' | 'popperTargets'>>;
-  deleteStage?: Resolver<ResolversTypes['Stages'], ParentType, ContextType, RequireFields<MutationDeleteStageArgs, 'id'>>;
-  lockStage?: Resolver<ResolversTypes['Stages'], ParentType, ContextType, RequireFields<MutationLockStageArgs, 'id'>>;
+  createStage?: Resolver<ResolversTypes['Stage'], ParentType, ContextType, RequireFields<MutationCreateStageArgs, 'description' | 'name' | 'noShoots' | 'paperTargets' | 'popperTargets'>>;
+  deleteStage?: Resolver<ResolversTypes['Stage'], ParentType, ContextType, RequireFields<MutationDeleteStageArgs, 'id'>>;
+  lockStage?: Resolver<ResolversTypes['Stage'], ParentType, ContextType, RequireFields<MutationLockStageArgs, 'id'>>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   feed?: Resolver<Array<ResolversTypes['Link']>, ParentType, ContextType>;
-  getAllStages?: Resolver<Array<ResolversTypes['Stages']>, ParentType, ContextType>;
+  getAllStages?: Resolver<Array<ResolversTypes['Stage']>, ParentType, ContextType>;
+  getStage?: Resolver<Array<ResolversTypes['Stage']>, ParentType, ContextType, RequireFields<QueryGetStageArgs, 'id'>>;
 };
 
-export type StagesResolvers<ContextType = any, ParentType extends ResolversParentTypes['Stages'] = ResolversParentTypes['Stages']> = {
+export type StageResolvers<ContextType = any, ParentType extends ResolversParentTypes['Stage'] = ResolversParentTypes['Stage']> = {
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -205,6 +212,6 @@ export type Resolvers<ContextType = any> = {
   Link?: LinkResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
-  Stages?: StagesResolvers<ContextType>;
+  Stage?: StageResolvers<ContextType>;
 };
 

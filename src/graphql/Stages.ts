@@ -6,10 +6,9 @@ import {
     objectType,
     stringArg,
 } from "nexus";
-import { NexusGenObjects } from "../../build/nexus-typegen";
 
-export const Stages = objectType({
-    name: "Stages", // 1
+export const Stage = objectType({
+    name: "Stage", // 1
     definition(t) {
         // 2
         t.nonNull.int("id");
@@ -33,23 +32,34 @@ export const Stages = objectType({
     },
 });
 
-export const StagesQuery = extendType({
+export const StageQuery = extendType({
     type: "Query",
     definition(t) {
         t.nonNull.list.nonNull.field("getAllStages", {
-            type: "Stages",
+            type: "Stage",
             resolve: (src, args, ctx, inf) => {
-                return ctx.prisma.stages.findMany();
+                return ctx.prisma.stage.findMany();
+            },
+        });
+        t.nonNull.list.nonNull.field("getStage", {
+            type: "Stage",
+            args: {
+                id: nonNull(intArg()),
+            },
+            resolve: (src, args, ctx, inf) => {
+                return ctx.prisma.stage.findUniqueOrThrow({
+                    where: { id: args.id },
+                });
             },
         });
     },
 });
 
-export const StagesMutation = extendType({
+export const StageMutation = extendType({
     type: "Mutation",
     definition(t) {
         t.nonNull.field("createStage", {
-            type: "Stages",
+            type: "Stage",
             args: {
                 name: nonNull(stringArg()),
                 description: nonNull(stringArg()),
@@ -58,7 +68,7 @@ export const StagesMutation = extendType({
                 popperTargets: nonNull(intArg()),
             },
             resolve: (src, args, ctx, inf) => {
-                return ctx.prisma.stages.create({
+                return ctx.prisma.stage.create({
                     data: {
                         description: args.description,
                         name: args.name,
@@ -70,21 +80,21 @@ export const StagesMutation = extendType({
             },
         });
         t.nonNull.field("deleteStage", {
-            type: "Stages",
+            type: "Stage",
             args: {
                 id: nonNull(intArg()),
             },
             resolve: (src, args, ctx, inf) => {
-                return ctx.prisma.stages.delete({ where: { id: args.id } });
+                return ctx.prisma.stage.delete({ where: { id: args.id } });
             },
         });
         t.nonNull.field("lockStage", {
-            type: "Stages",
+            type: "Stage",
             args: {
                 id: nonNull(intArg()),
             },
             resolve: (src, args, ctx, inf) => {
-                return ctx.prisma.stages.update({
+                return ctx.prisma.stage.update({
                     where: { id: args.id },
                     data: {
                         isLocked: true,

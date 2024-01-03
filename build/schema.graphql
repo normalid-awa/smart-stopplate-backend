@@ -14,17 +14,18 @@ type Link {
 }
 
 type Mutation {
-  createStage(description: String!, name: String!, noShoots: Int!, paperTargets: Int!, popperTargets: Int!): Stages!
-  deleteStage(id: Int!): Stages!
-  lockStage(id: Int!): Stages!
+  createStage(description: String!, name: String!, noShoots: Int!, paperTargets: Int!, popperTargets: Int!): Stage!
+  deleteStage(id: Int!): Stage!
+  lockStage(id: Int!): Stage!
 }
 
 type Query {
   feed: [Link!]!
-  getAllStages: [Stages!]!
+  getAllStages: [Stage!]!
+  getStage(id: Int!): [Stage!]!
 }
 
-type Stages {
+type Stage {
   createdAt: DateTime!
   description: String!
   id: Int!

@@ -19,7 +19,7 @@ model Link {
   url         String
 }
 
-model Stages {
+model Stage {
   id            Int      @id @default(autoincrement())
   createdAt     DateTime @default(now())
   name          String

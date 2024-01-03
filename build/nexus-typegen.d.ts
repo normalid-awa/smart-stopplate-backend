@@ -51,7 +51,7 @@ export interface NexusGenObjects {
   }
   Mutation: {};
   Query: {};
-  Stages: { // root type
+  Stage: { // root type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     description: string; // String!
     id: number; // Int!
@@ -80,15 +80,16 @@ export interface NexusGenFieldTypes {
     url: string; // String!
   }
   Mutation: { // field return type
-    createStage: NexusGenRootTypes['Stages']; // Stages!
-    deleteStage: NexusGenRootTypes['Stages']; // Stages!
-    lockStage: NexusGenRootTypes['Stages']; // Stages!
+    createStage: NexusGenRootTypes['Stage']; // Stage!
+    deleteStage: NexusGenRootTypes['Stage']; // Stage!
+    lockStage: NexusGenRootTypes['Stage']; // Stage!
   }
   Query: { // field return type
     feed: NexusGenRootTypes['Link'][]; // [Link!]!
-    getAllStages: NexusGenRootTypes['Stages'][]; // [Stages!]!
+    getAllStages: NexusGenRootTypes['Stage'][]; // [Stage!]!
+    getStage: NexusGenRootTypes['Stage'][]; // [Stage!]!
   }
-  Stages: { // field return type
+  Stage: { // field return type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     description: string; // String!
     id: number; // Int!
@@ -109,15 +110,16 @@ export interface NexusGenFieldTypeNames {
     url: 'String'
   }
   Mutation: { // field return type name
-    createStage: 'Stages'
-    deleteStage: 'Stages'
-    lockStage: 'Stages'
+    createStage: 'Stage'
+    deleteStage: 'Stage'
+    lockStage: 'Stage'
   }
   Query: { // field return type name
     feed: 'Link'
-    getAllStages: 'Stages'
+    getAllStages: 'Stage'
+    getStage: 'Stage'
   }
-  Stages: { // field return type name
+  Stage: { // field return type name
     createdAt: 'DateTime'
     description: 'String'
     id: 'Int'
@@ -144,6 +146,11 @@ export interface NexusGenArgTypes {
       id: number; // Int!
     }
     lockStage: { // args
+      id: number; // Int!
+    }
+  }
+  Query: {
+    getStage: { // args
       id: number; // Int!
     }
   }
