@@ -16,6 +16,7 @@ type Link {
 type Mutation {
   createStage(description: String!, name: String!, noShoots: Int!, paperTargets: Int!, popperTargets: Int!): Stages!
   deleteStage(id: Int!): Stages!
+  lockStage(id: Int!): Stages!
 }
 
 type Query {
@@ -27,6 +28,7 @@ type Stages {
   createdAt: DateTime!
   description: String!
   id: Int!
+  isLocked: Boolean!
   maximumPoints: Int!
   minimumRounds: Int!
   name: String!

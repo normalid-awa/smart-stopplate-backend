@@ -29,6 +29,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createStage: Stages;
   deleteStage: Stages;
+  lockStage: Stages;
 };
 
 
@@ -45,6 +46,11 @@ export type MutationDeleteStageArgs = {
   id: Scalars['Int']['input'];
 };
 
+
+export type MutationLockStageArgs = {
+  id: Scalars['Int']['input'];
+};
+
 export type Query = {
   __typename?: 'Query';
   feed: Array<Link>;
@@ -56,6 +62,7 @@ export type Stages = {
   createdAt: Scalars['DateTime']['output'];
   description: Scalars['String']['output'];
   id: Scalars['Int']['output'];
+  isLocked: Scalars['Boolean']['output'];
   maximumPoints: Scalars['Int']['output'];
   minimumRounds: Scalars['Int']['output'];
   name: Scalars['String']['output'];
@@ -171,6 +178,7 @@ export type LinkResolvers<ContextType = any, ParentType extends ResolversParentT
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   createStage?: Resolver<ResolversTypes['Stages'], ParentType, ContextType, RequireFields<MutationCreateStageArgs, 'description' | 'name' | 'noShoots' | 'paperTargets' | 'popperTargets'>>;
   deleteStage?: Resolver<ResolversTypes['Stages'], ParentType, ContextType, RequireFields<MutationDeleteStageArgs, 'id'>>;
+  lockStage?: Resolver<ResolversTypes['Stages'], ParentType, ContextType, RequireFields<MutationLockStageArgs, 'id'>>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
@@ -182,6 +190,7 @@ export type StagesResolvers<ContextType = any, ParentType extends ResolversParen
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  isLocked?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   maximumPoints?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   minimumRounds?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;

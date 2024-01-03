@@ -19,6 +19,7 @@ export const Stages = objectType({
         t.nonNull.int("paperTargets");
         t.nonNull.int("noShoots");
         t.nonNull.int("popperTargets");
+        t.nonNull.boolean("isLocked");
         t.nonNull.int("minimumRounds", {
             resolve: (src, args, ctx, inf) => {
                 return src.paperTargets * 2 + src.popperTargets;
@@ -75,6 +76,20 @@ export const StagesMutation = extendType({
             },
             resolve: (src, args, ctx, inf) => {
                 return ctx.prisma.stages.delete({ where: { id: args.id } });
+            },
+        });
+        t.nonNull.field("lockStage", {
+            type: "Stages",
+            args: {
+                id: nonNull(intArg()),
+            },
+            resolve: (src, args, ctx, inf) => {
+                return ctx.prisma.stages.update({
+                    where: { id: args.id },
+                    data: {
+                        isLocked: true,
+                    },
+                });
             },
         });
     },

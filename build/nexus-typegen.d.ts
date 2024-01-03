@@ -55,6 +55,7 @@ export interface NexusGenObjects {
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     description: string; // String!
     id: number; // Int!
+    isLocked: boolean; // Boolean!
     name: string; // String!
     noShoots: number; // Int!
     paperTargets: number; // Int!
@@ -81,6 +82,7 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     createStage: NexusGenRootTypes['Stages']; // Stages!
     deleteStage: NexusGenRootTypes['Stages']; // Stages!
+    lockStage: NexusGenRootTypes['Stages']; // Stages!
   }
   Query: { // field return type
     feed: NexusGenRootTypes['Link'][]; // [Link!]!
@@ -90,6 +92,7 @@ export interface NexusGenFieldTypes {
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     description: string; // String!
     id: number; // Int!
+    isLocked: boolean; // Boolean!
     maximumPoints: number; // Int!
     minimumRounds: number; // Int!
     name: string; // String!
@@ -108,6 +111,7 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     createStage: 'Stages'
     deleteStage: 'Stages'
+    lockStage: 'Stages'
   }
   Query: { // field return type name
     feed: 'Link'
@@ -117,6 +121,7 @@ export interface NexusGenFieldTypeNames {
     createdAt: 'DateTime'
     description: 'String'
     id: 'Int'
+    isLocked: 'Boolean'
     maximumPoints: 'Int'
     minimumRounds: 'Int'
     name: 'String'
@@ -136,6 +141,9 @@ export interface NexusGenArgTypes {
       popperTargets: number; // Int!
     }
     deleteStage: { // args
+      id: number; // Int!
+    }
+    lockStage: { // args
       id: number; // Int!
     }
   }
