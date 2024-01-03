@@ -7,23 +7,23 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "dev:graphql": "ts-node-dev --transpile-only --no-notify --exit-child src/index.ts",
         "dev:prisma": "npx ts-node src/script.ts",
-        "gen": "npx ts-node --transpile-only src/schema",
-        "ssl": "local-ssl-proxy --source 8081 --target 8080",
-        "codegen": "graphql-codegen --config gql_dtos.ts"
+        "gen": "npx ts-node --transpile-only src/schema && graphql-codegen --config codegen.ts",
+        "ssl": "local-ssl-proxy --source 8081 --target 8080"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "devDependencies": {
         "@graphql-codegen/cli": "5.0.0",
+        "@graphql-codegen/client-preset": "4.1.0",
+        "@graphql-codegen/introspection": "4.0.0",
+        "@graphql-codegen/typescript": "^4.0.1",
+        "@graphql-codegen/typescript-resolvers": "^4.0.1",
         "@parcel/watcher": "^2.3.0",
         "@types/bcryptjs": "^2.4.6",
         "@types/jsonwebtoken": "^9.0.5",
         "ts-node-dev": "^2.0.0",
-        "typescript": "^5.3.3",
-        "@graphql-codegen/typescript-resolvers": "4.0.1",
-        "@graphql-codegen/typescript": "4.0.1",
-        "@graphql-codegen/introspection": "4.0.0"
+        "typescript": "^5.3.3"
     },
     "dependencies": {
         "@prisma/client": "^5.7.1",
