@@ -52,6 +52,7 @@ export interface NexusGenObjects {
   Mutation: {};
   Query: {};
   Stage: { // root type
+    condition: number; // Int!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     description: string; // String!
     id: number; // Int!
@@ -90,6 +91,7 @@ export interface NexusGenFieldTypes {
     getStage: NexusGenRootTypes['Stage']; // Stage!
   }
   Stage: { // field return type
+    condition: number; // Int!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     description: string; // String!
     id: number; // Int!
@@ -100,6 +102,7 @@ export interface NexusGenFieldTypes {
     noShoots: number; // Int!
     paperTargets: number; // Int!
     popperTargets: number; // Int!
+    type: string; // String!
   }
 }
 
@@ -120,6 +123,7 @@ export interface NexusGenFieldTypeNames {
     getStage: 'Stage'
   }
   Stage: { // field return type name
+    condition: 'Int'
     createdAt: 'DateTime'
     description: 'String'
     id: 'Int'
@@ -130,6 +134,7 @@ export interface NexusGenFieldTypeNames {
     noShoots: 'Int'
     paperTargets: 'Int'
     popperTargets: 'Int'
+    type: 'String'
   }
 }
 

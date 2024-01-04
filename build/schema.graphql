@@ -26,6 +26,7 @@ type Query {
 }
 
 type Stage {
+  condition: Int!
   createdAt: DateTime!
   description: String!
   id: Int!
@@ -36,4 +37,7 @@ type Stage {
   noShoots: Int!
   paperTargets: Int!
   popperTargets: Int!
+
+  """only return short,medium,long and other"""
+  type: String!
 }

@@ -27,5 +27,6 @@ model Stage {
   paperTargets  Int
   noShoots      Int
   popperTargets Int
-  isLocked      Boolean @default(false)
+  isLocked      Boolean  @default(false)
+  condition     Int      @default(1)
 }

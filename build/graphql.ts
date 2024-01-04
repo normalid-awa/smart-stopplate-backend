@@ -65,6 +65,7 @@ export type QueryGetStageArgs = {
 
 export type Stage = {
   __typename?: 'Stage';
+  condition: Scalars['Int']['output'];
   createdAt: Scalars['DateTime']['output'];
   description: Scalars['String']['output'];
   id: Scalars['Int']['output'];
@@ -75,6 +76,8 @@ export type Stage = {
   noShoots: Scalars['Int']['output'];
   paperTargets: Scalars['Int']['output'];
   popperTargets: Scalars['Int']['output'];
+  /** only return short,medium,long and other */
+  type: Scalars['String']['output'];
 };
 
 
@@ -194,6 +197,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 };
 
 export type StageResolvers<ContextType = any, ParentType extends ResolversParentTypes['Stage'] = ResolversParentTypes['Stage']> = {
+  condition?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -204,6 +208,7 @@ export type StageResolvers<ContextType = any, ParentType extends ResolversParent
   noShoots?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   paperTargets?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   popperTargets?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 

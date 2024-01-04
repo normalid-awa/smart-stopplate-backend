@@ -19,6 +19,7 @@ export const Stage = objectType({
         t.nonNull.int("noShoots");
         t.nonNull.int("popperTargets");
         t.nonNull.boolean("isLocked");
+        t.nonNull.int("condition");
         t.nonNull.int("minimumRounds", {
             resolve: (src, args, ctx, inf) => {
                 return src.paperTargets * 2 + src.popperTargets;
@@ -27,6 +28,21 @@ export const Stage = objectType({
         t.nonNull.int("maximumPoints", {
             resolve: (src, args, ctx, inf) => {
                 return src.paperTargets * 2 * 5 + src.popperTargets * 5;
+            },
+        });
+        t.nonNull.string("type", {
+            description: "only return short,medium,long and other",
+            resolve: (src, args, ctx, inf) => {
+                let max = src.paperTargets * 2 + src.popperTargets;
+                if (max <= 12) {
+                    return "short"
+                } else if (max <= 24) {
+                    return "medium"
+                } else if (max <= 32) {
+                    return "long"
+                } else {
+                    return "other"
+                }
             },
         });
     },
