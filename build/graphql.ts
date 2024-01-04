@@ -55,7 +55,7 @@ export type Query = {
   __typename?: 'Query';
   feed: Array<Link>;
   getAllStages: Array<Stage>;
-  getStage: Array<Stage>;
+  getStage: Stage;
 };
 
 
@@ -190,7 +190,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   feed?: Resolver<Array<ResolversTypes['Link']>, ParentType, ContextType>;
   getAllStages?: Resolver<Array<ResolversTypes['Stage']>, ParentType, ContextType>;
-  getStage?: Resolver<Array<ResolversTypes['Stage']>, ParentType, ContextType, RequireFields<QueryGetStageArgs, 'id'>>;
+  getStage?: Resolver<ResolversTypes['Stage'], ParentType, ContextType, RequireFields<QueryGetStageArgs, 'id'>>;
 };
 
 export type StageResolvers<ContextType = any, ParentType extends ResolversParentTypes['Stage'] = ResolversParentTypes['Stage']> = {

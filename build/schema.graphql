@@ -22,7 +22,7 @@ type Mutation {
 type Query {
   feed: [Link!]!
   getAllStages: [Stage!]!
-  getStage(id: Int!): [Stage!]!
+  getStage(id: Int!): Stage!
 }
 
 type Stage {

@@ -41,13 +41,13 @@ export const StageQuery = extendType({
                 return ctx.prisma.stage.findMany();
             },
         });
-        t.nonNull.list.nonNull.field("getStage", {
+        t.nonNull.field("getStage", {
             type: "Stage",
             args: {
                 id: nonNull(intArg()),
             },
             resolve: (src, args, ctx, inf) => {
-                return ctx.prisma.stage.findUniqueOrThrow({
+                return ctx.prisma.stage.findFirstOrThrow({
                     where: { id: args.id },
                 });
             },

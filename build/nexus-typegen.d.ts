@@ -87,7 +87,7 @@ export interface NexusGenFieldTypes {
   Query: { // field return type
     feed: NexusGenRootTypes['Link'][]; // [Link!]!
     getAllStages: NexusGenRootTypes['Stage'][]; // [Stage!]!
-    getStage: NexusGenRootTypes['Stage'][]; // [Stage!]!
+    getStage: NexusGenRootTypes['Stage']; // Stage!
   }
   Stage: { // field return type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
