@@ -141,6 +141,7 @@ export interface NexusGenFieldTypeNames {
 export interface NexusGenArgTypes {
   Mutation: {
     createStage: { // args
+      condition: number; // Int!
       description: string; // String!
       name: string; // String!
       noShoots: number; // Int!

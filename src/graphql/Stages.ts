@@ -82,6 +82,7 @@ export const StageMutation = extendType({
                 paperTargets: nonNull(intArg()),
                 noShoots: nonNull(intArg()),
                 popperTargets: nonNull(intArg()),
+                condition: nonNull(intArg()),
             },
             resolve: (src, args, ctx, inf) => {
                 return ctx.prisma.stage.create({
@@ -91,6 +92,7 @@ export const StageMutation = extendType({
                         noShoots: args.noShoots,
                         paperTargets: args.paperTargets,
                         popperTargets: args.popperTargets,
+                        condition: args.condition,
                     },
                 });
             },

@@ -34,6 +34,7 @@ export type Mutation = {
 
 
 export type MutationCreateStageArgs = {
+  condition: Scalars['Int']['input'];
   description: Scalars['String']['input'];
   name: Scalars['String']['input'];
   noShoots: Scalars['Int']['input'];
@@ -185,7 +186,7 @@ export type LinkResolvers<ContextType = any, ParentType extends ResolversParentT
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  createStage?: Resolver<ResolversTypes['Stage'], ParentType, ContextType, RequireFields<MutationCreateStageArgs, 'description' | 'name' | 'noShoots' | 'paperTargets' | 'popperTargets'>>;
+  createStage?: Resolver<ResolversTypes['Stage'], ParentType, ContextType, RequireFields<MutationCreateStageArgs, 'condition' | 'description' | 'name' | 'noShoots' | 'paperTargets' | 'popperTargets'>>;
   deleteStage?: Resolver<ResolversTypes['Stage'], ParentType, ContextType, RequireFields<MutationDeleteStageArgs, 'id'>>;
   lockStage?: Resolver<ResolversTypes['Stage'], ParentType, ContextType, RequireFields<MutationLockStageArgs, 'id'>>;
 };

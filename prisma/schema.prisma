@@ -28,5 +28,5 @@ model Stage {
   noShoots      Int
   popperTargets Int
   isLocked      Boolean  @default(false)
-  condition     Int      @default(1)
+  condition     Int
 }
