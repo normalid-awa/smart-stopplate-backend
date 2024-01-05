@@ -81,6 +81,11 @@ export type Stage = {
   type: Scalars['String']['output'];
 };
 
+export type Subscription = {
+  __typename?: 'Subscription';
+  subscribeToStageUpdate: Scalars['Boolean']['output'];
+};
+
 
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -160,6 +165,7 @@ export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>;
   Stage: ResolverTypeWrapper<Stage>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
+  Subscription: ResolverTypeWrapper<{}>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -172,6 +178,7 @@ export type ResolversParentTypes = {
   Query: {};
   Stage: Stage;
   String: Scalars['String']['output'];
+  Subscription: {};
 };
 
 export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
@@ -213,11 +220,16 @@ export type StageResolvers<ContextType = any, ParentType extends ResolversParent
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = {
+  subscribeToStageUpdate?: SubscriptionResolver<ResolversTypes['Boolean'], "subscribeToStageUpdate", ParentType, ContextType>;
+};
+
 export type Resolvers<ContextType = any> = {
   DateTime?: GraphQLScalarType;
   Link?: LinkResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Stage?: StageResolvers<ContextType>;
+  Subscription?: SubscriptionResolvers<ContextType>;
 };
 
