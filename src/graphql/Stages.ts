@@ -128,12 +128,22 @@ export const StageMutation = extendType({
 export const StageSubscription = extendType({
     type: "Subscription",
     definition(t) {
-        t.nonNull.field("truths", {
-            type: "Int",
-            subscribe: async function* () {
-                for (let i = 2; i >= 0; i--) {
-                    await new Promise((resolve) => setTimeout(resolve, 1000));
-                    yield i;
+        t.nonNull.field("subscribeToStageUpdate", {
+            type: "Boolean",
+            subscribe: async function* (src, args, ctx, info) {
+                while (true) {
+                    await new Promise<void>((resolve) => {
+                        let sub_id: number;
+                        sub_id = ctx.subscribe(
+                            "Stage",
+                            ["create", "update"],
+                            () => {
+                                ctx.unsubscribe(sub_id);
+                                resolve();
+                            }
+                        );
+                    });
+                    yield true;
                 }
             },
             resolve(eventData) {
@@ -142,3 +152,21 @@ export const StageSubscription = extendType({
         });
     },
 });
+
+// export const StageSubscription = extendType({
+//     type: "Subscription",
+//     definition(t) {
+//         t.nonNull.field("truths", {
+//             type: "Int",
+//             subscribe: async function* () {
+//                 for (let i = 2; i >= 0; i--) {
+//                     await new Promise((resolve) => setTimeout(resolve, 1000));
+//                     yield i;
+//                 }
+//             },
+//             resolve(eventData) {
+//                 return eventData;
+//             },
+//         });
+//     },
+// });

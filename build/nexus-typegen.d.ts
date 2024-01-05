@@ -106,7 +106,7 @@ export interface NexusGenFieldTypes {
     type: string; // String!
   }
   Subscription: { // field return type
-    truths: number; // Int!
+    subscribeToStageUpdate: boolean; // Boolean!
   }
 }
 
@@ -141,7 +141,7 @@ export interface NexusGenFieldTypeNames {
     type: 'String'
   }
   Subscription: { // field return type name
-    truths: 'Int'
+    subscribeToStageUpdate: 'Boolean'
   }
 }
 
