@@ -136,7 +136,15 @@ export const StageSubscription = extendType({
                         let sub_id: number;
                         sub_id = ctx.subscribe(
                             "Stage",
-                            ["create", "update"],
+                            [
+                                "create",
+                                "update",
+                                "delete",
+                                "deleteMany",
+                                "createMany",
+                                "updateMany",
+                                "upsert",
+                            ],
                             () => {
                                 ctx.unsubscribe(sub_id);
                                 resolve();
@@ -153,20 +161,20 @@ export const StageSubscription = extendType({
     },
 });
 
-// export const StageSubscription = extendType({
-//     type: "Subscription",
-//     definition(t) {
-//         t.nonNull.field("truths", {
-//             type: "Int",
-//             subscribe: async function* () {
-//                 for (let i = 2; i >= 0; i--) {
-//                     await new Promise((resolve) => setTimeout(resolve, 1000));
-//                     yield i;
-//                 }
-//             },
-//             resolve(eventData) {
-//                 return eventData;
-//             },
-//         });
-//     },
-// });
+export const StageSSubscription = extendType({
+    type: "Subscription",
+    definition(t) {
+        t.nonNull.field("truths", {
+            type: "Int",
+            subscribe: async function* () {
+                for (let i = 2; i >= 0; i--) {
+                    await new Promise((resolve) => setTimeout(resolve, 1000));
+                    yield i;
+                }
+            },
+            resolve(eventData) {
+                return eventData;
+            },
+        });
+    },
+});

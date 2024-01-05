@@ -44,4 +44,5 @@ type Stage {
 
 type Subscription {
   subscribeToStageUpdate: Boolean!
+  truths: Int!
 }
