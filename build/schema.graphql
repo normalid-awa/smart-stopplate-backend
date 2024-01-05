@@ -41,3 +41,7 @@ type Stage {
   """only return short,medium,long and other"""
   type: String!
 }
+
+type Subscription {
+  truths: Int!
+}

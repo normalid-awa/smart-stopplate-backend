@@ -62,6 +62,7 @@ export interface NexusGenObjects {
     paperTargets: number; // Int!
     popperTargets: number; // Int!
   }
+  Subscription: {};
 }
 
 export interface NexusGenInterfaces {
@@ -104,6 +105,9 @@ export interface NexusGenFieldTypes {
     popperTargets: number; // Int!
     type: string; // String!
   }
+  Subscription: { // field return type
+    truths: number; // Int!
+  }
 }
 
 export interface NexusGenFieldTypeNames {
@@ -135,6 +139,9 @@ export interface NexusGenFieldTypeNames {
     paperTargets: 'Int'
     popperTargets: 'Int'
     type: 'String'
+  }
+  Subscription: { // field return type name
+    truths: 'Int'
   }
 }
 

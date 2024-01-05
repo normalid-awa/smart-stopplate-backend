@@ -5,6 +5,8 @@ import {
     nonNull,
     objectType,
     stringArg,
+    subscriptionField,
+    subscriptionType,
 } from "nexus";
 
 export const Stage = objectType({
@@ -35,13 +37,13 @@ export const Stage = objectType({
             resolve: (src, args, ctx, inf) => {
                 let max = src.paperTargets * 2 + src.popperTargets;
                 if (max <= 12) {
-                    return "short"
+                    return "short";
                 } else if (max <= 24) {
-                    return "medium"
+                    return "medium";
                 } else if (max <= 32) {
-                    return "long"
+                    return "long";
                 } else {
-                    return "other"
+                    return "other";
                 }
             },
         });
@@ -118,6 +120,24 @@ export const StageMutation = extendType({
                         isLocked: true,
                     },
                 });
+            },
+        });
+    },
+});
+
+export const StageSubscription = extendType({
+    type: "Subscription",
+    definition(t) {
+        t.nonNull.field("truths", {
+            type: "Int",
+            subscribe: async function* () {
+                for (let i = 2; i >= 0; i--) {
+                    await new Promise((resolve) => setTimeout(resolve, 1000));
+                    yield i;
+                }
+            },
+            resolve(eventData) {
+                return eventData;
             },
         });
     },
