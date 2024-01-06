@@ -66,5 +66,4 @@ type Stage {
 type Subscription {
   subscribeToShooterUpdate: Boolean!
   subscribeToStageUpdate: Boolean!
-  truths: Int!
 }

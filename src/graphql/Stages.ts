@@ -161,20 +161,3 @@ export const StageSubscription = extendType({
     },
 });
 
-export const StageSSubscription = extendType({
-    type: "Subscription",
-    definition(t) {
-        t.nonNull.field("truths", {
-            type: "Int",
-            subscribe: async function* () {
-                for (let i = 2; i >= 0; i--) {
-                    await new Promise((resolve) => setTimeout(resolve, 1000));
-                    yield i;
-                }
-            },
-            resolve(eventData) {
-                return eventData;
-            },
-        });
-    },
-});
