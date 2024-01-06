@@ -60,6 +60,19 @@ export const ShooterMutation = extendType({
                 });
             },
         });
+        t.nonNull.field("deleteShooter", {
+            type: "Shooter",
+            args: {
+                id: nonNull(intArg()),
+            },
+            resolve(src, args, ctx, info) {
+                return ctx.prisma.shooter.delete({
+                    where: {
+                        id: args.id,
+                    },
+                });
+            },
+        });
     },
 });
 

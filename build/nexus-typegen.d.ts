@@ -91,6 +91,7 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     createShooter: NexusGenRootTypes['Shooter']; // Shooter!
     createStage: NexusGenRootTypes['Stage']; // Stage!
+    deleteShooter: NexusGenRootTypes['Shooter']; // Shooter!
     deleteStage: NexusGenRootTypes['Stage']; // Stage!
     lockStage: NexusGenRootTypes['Stage']; // Stage!
     updateShooter: NexusGenRootTypes['Shooter']; // Shooter!
@@ -138,6 +139,7 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     createShooter: 'Shooter'
     createStage: 'Stage'
+    deleteShooter: 'Shooter'
     deleteStage: 'Stage'
     lockStage: 'Stage'
     updateShooter: 'Shooter'
@@ -189,6 +191,9 @@ export interface NexusGenArgTypes {
       noShoots: number; // Int!
       paperTargets: number; // Int!
       popperTargets: number; // Int!
+    }
+    deleteShooter: { // args
+      id: number; // Int!
     }
     deleteStage: { // args
       id: number; // Int!

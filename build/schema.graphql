@@ -25,6 +25,7 @@ type Link {
 type Mutation {
   createShooter(division: String!, name: String!): Shooter!
   createStage(condition: Int!, description: String!, name: String!, noShoots: Int!, paperTargets: Int!, popperTargets: Int!): Stage!
+  deleteShooter(id: Int!): Shooter!
   deleteStage(id: Int!): Stage!
   lockStage(id: Int!): Stage!
   updateShooter(division: String!, id: Int!, name: String!): Shooter!
