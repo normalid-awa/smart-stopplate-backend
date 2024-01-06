@@ -7,22 +7,37 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `dat
 """
 scalar DateTime
 
-type Link {
-  description: String!
-  id: Int!
-  url: String!
+"""Shooter divisons"""
+enum Division {
+  CLASSIC
+  OPEN
+  PRODUCTION
+  PRODUCTIONOPTICS
+  STANDARD
 }
 
 type Mutation {
+  createShooter(division: String!, name: String!): Shooter!
   createStage(condition: Int!, description: String!, name: String!, noShoots: Int!, paperTargets: Int!, popperTargets: Int!): Stage!
+  deleteShooter(id: Int!): Shooter!
   deleteStage(id: Int!): Stage!
   lockStage(id: Int!): Stage!
+  updateShooter(division: String!, id: Int!, name: String!): Shooter!
+  updateStage(condition: Int!, description: String!, id: Int!, name: String!, noShoots: Int!, paperTargets: Int!, popperTargets: Int!): Stage!
 }
 
 type Query {
-  feed: [Link!]!
+  getAllShooters: [Shooter]!
   getAllStages: [Stage!]!
+  getShooter(id: Int!): Shooter
   getStage(id: Int!): Stage!
+}
+
+type Shooter {
+  createdAt: DateTime!
+  division: Division!
+  id: Int!
+  name: String!
 }
 
 type Stage {
@@ -43,6 +58,6 @@ type Stage {
 }
 
 type Subscription {
+  subscribeToShooterUpdate: Boolean!
   subscribeToStageUpdate: Boolean!
-  truths: Int!
 }
