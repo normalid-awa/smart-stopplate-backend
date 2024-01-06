@@ -29,6 +29,7 @@ type Mutation {
   deleteStage(id: Int!): Stage!
   lockStage(id: Int!): Stage!
   updateShooter(division: String!, id: Int!, name: String!): Shooter!
+  updateStage(condition: Int!, description: String!, id: Int!, name: String!, noShoots: Int!, paperTargets: Int!, popperTargets: Int!): Stage!
 }
 
 type Query {

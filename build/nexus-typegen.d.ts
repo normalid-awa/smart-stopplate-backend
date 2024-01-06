@@ -95,6 +95,7 @@ export interface NexusGenFieldTypes {
     deleteStage: NexusGenRootTypes['Stage']; // Stage!
     lockStage: NexusGenRootTypes['Stage']; // Stage!
     updateShooter: NexusGenRootTypes['Shooter']; // Shooter!
+    updateStage: NexusGenRootTypes['Stage']; // Stage!
   }
   Query: { // field return type
     feed: NexusGenRootTypes['Link'][]; // [Link!]!
@@ -142,6 +143,7 @@ export interface NexusGenFieldTypeNames {
     deleteStage: 'Stage'
     lockStage: 'Stage'
     updateShooter: 'Shooter'
+    updateStage: 'Stage'
   }
   Query: { // field return type name
     feed: 'Link'
@@ -203,6 +205,15 @@ export interface NexusGenArgTypes {
       division: string; // String!
       id: number; // Int!
       name: string; // String!
+    }
+    updateStage: { // args
+      condition: number; // Int!
+      description: string; // String!
+      id: number; // Int!
+      name: string; // String!
+      noShoots: number; // Int!
+      paperTargets: number; // Int!
+      popperTargets: number; // Int!
     }
   }
   Query: {

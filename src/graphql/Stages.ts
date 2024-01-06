@@ -99,6 +99,33 @@ export const StageMutation = extendType({
                 });
             },
         });
+        t.nonNull.field("updateStage", {
+            type: "Stage",
+            args: {
+                id: nonNull(intArg()),
+                name: nonNull(stringArg()),
+                description: nonNull(stringArg()),
+                paperTargets: nonNull(intArg()),
+                noShoots: nonNull(intArg()),
+                popperTargets: nonNull(intArg()),
+                condition: nonNull(intArg()),
+            },
+            resolve: (src, args, ctx, inf) => {
+                return ctx.prisma.stage.update({
+                    where: {
+                        id: args.id,
+                    },
+                    data: {
+                        description: args.description,
+                        name: args.name,
+                        noShoots: args.noShoots,
+                        paperTargets: args.paperTargets,
+                        popperTargets: args.popperTargets,
+                        condition: args.condition,
+                    },
+                });
+            },
+        });
         t.nonNull.field("deleteStage", {
             type: "Stage",
             args: {
@@ -160,4 +187,3 @@ export const StageSubscription = extendType({
         });
     },
 });
-
