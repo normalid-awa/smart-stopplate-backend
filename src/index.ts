@@ -3,9 +3,11 @@ import { schema } from "./schema";
 import { context } from "./context";
 // import { GraphQLServer } from "graphql-yoga";
 import { createSchema, createYoga } from "graphql-yoga";
-import { createServer } from "node:http";
+// import { createServer } from "node:http";
+import { createServer } from "https";
 import { WebSocketServer } from "ws";
 import { useServer } from "graphql-ws/lib/use/ws";
+const fs = require("fs");
 
 const port = 8080;
 
@@ -33,7 +35,14 @@ const yoga = createYoga({
 });
 
 // Get NodeJS Server from Yoga
-const httpServer = createServer(yoga);
+// const httpServer = createServer(yoga);
+const httpServer = createServer(
+    {
+        cert: fs.readFileSync(process.env.SSL_CERT_LOCATE),
+        key: fs.readFileSync(process.env.SSL_KEY_LOCATE),
+    },
+    yoga
+);
 // Create WebSocket server instance from our Node server
 const wsServer = new WebSocketServer({
     server: httpServer,
