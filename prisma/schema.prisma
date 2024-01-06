@@ -2,8 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 // 1
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "mysql"
+  url      = env("MYSQL_CONNECTION_STRING")
 }
 
 // 2
@@ -20,7 +20,7 @@ model Link {
 }
 
 model Stage {
-  id            Int      @id @default(autoincrement())
+  id            Int      @id @unique @default(autoincrement())
   createdAt     DateTime @default(now())
   name          String
   description   String
@@ -29,4 +29,19 @@ model Stage {
   popperTargets Int
   isLocked      Boolean  @default(false)
   condition     Int
+}
+
+enum Division {
+  OPEN
+  STANDARD
+  PRODUCTION
+  PRODUCTIONOPTICS
+  CLASSIC
+}
+
+model Shooter {
+  id        Int      @id @unique @default(autoincrement())
+  createdAt DateTime @default(now())
+  name      String
+  division  Division
 }

@@ -5,6 +5,7 @@
 # Prisma supports the native connection string format for PostgreSQL, MySQL, SQLite, SQL Server, MongoDB and CockroachDB.
 # See the documentation for all the connection string options: https://pris.ly/d/connection-strings
 
+MYSQL_CONNECTION_STRING = ""
 SSL_CERT_LOCATE = ""
 SSL_KEY_LOCATE = ""
 ```

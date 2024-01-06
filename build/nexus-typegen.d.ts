@@ -32,6 +32,7 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
+  Division: "CLASSIC" | "OPEN" | "PRODUCTION" | "PRODUCTIONOPTICS" | "STANDARD"
 }
 
 export interface NexusGenScalars {
@@ -51,6 +52,12 @@ export interface NexusGenObjects {
   }
   Mutation: {};
   Query: {};
+  Shooter: { // root type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    division: NexusGenEnums['Division']; // Division!
+    id: number; // Int!
+    name: string; // String!
+  }
   Stage: { // root type
     condition: number; // Int!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -73,7 +80,7 @@ export interface NexusGenUnions {
 
 export type NexusGenRootTypes = NexusGenObjects
 
-export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
+export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
   Link: { // field return type
@@ -82,14 +89,24 @@ export interface NexusGenFieldTypes {
     url: string; // String!
   }
   Mutation: { // field return type
+    createShooter: NexusGenRootTypes['Shooter']; // Shooter!
     createStage: NexusGenRootTypes['Stage']; // Stage!
     deleteStage: NexusGenRootTypes['Stage']; // Stage!
     lockStage: NexusGenRootTypes['Stage']; // Stage!
+    updateShooter: NexusGenRootTypes['Shooter']; // Shooter!
   }
   Query: { // field return type
     feed: NexusGenRootTypes['Link'][]; // [Link!]!
+    getAllShooters: Array<NexusGenRootTypes['Shooter'] | null>; // [Shooter]!
     getAllStages: NexusGenRootTypes['Stage'][]; // [Stage!]!
+    getShooter: NexusGenRootTypes['Shooter'] | null; // Shooter
     getStage: NexusGenRootTypes['Stage']; // Stage!
+  }
+  Shooter: { // field return type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    division: NexusGenEnums['Division']; // Division!
+    id: number; // Int!
+    name: string; // String!
   }
   Stage: { // field return type
     condition: number; // Int!
@@ -106,6 +123,7 @@ export interface NexusGenFieldTypes {
     type: string; // String!
   }
   Subscription: { // field return type
+    subscribeToShooterUpdate: boolean; // Boolean!
     subscribeToStageUpdate: boolean; // Boolean!
     truths: number; // Int!
   }
@@ -118,14 +136,24 @@ export interface NexusGenFieldTypeNames {
     url: 'String'
   }
   Mutation: { // field return type name
+    createShooter: 'Shooter'
     createStage: 'Stage'
     deleteStage: 'Stage'
     lockStage: 'Stage'
+    updateShooter: 'Shooter'
   }
   Query: { // field return type name
     feed: 'Link'
+    getAllShooters: 'Shooter'
     getAllStages: 'Stage'
+    getShooter: 'Shooter'
     getStage: 'Stage'
+  }
+  Shooter: { // field return type name
+    createdAt: 'DateTime'
+    division: 'Division'
+    id: 'Int'
+    name: 'String'
   }
   Stage: { // field return type name
     condition: 'Int'
@@ -142,6 +170,7 @@ export interface NexusGenFieldTypeNames {
     type: 'String'
   }
   Subscription: { // field return type name
+    subscribeToShooterUpdate: 'Boolean'
     subscribeToStageUpdate: 'Boolean'
     truths: 'Int'
   }
@@ -149,6 +178,10 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    createShooter: { // args
+      division: string; // String!
+      name: string; // String!
+    }
     createStage: { // args
       condition: number; // Int!
       description: string; // String!
@@ -163,8 +196,16 @@ export interface NexusGenArgTypes {
     lockStage: { // args
       id: number; // Int!
     }
+    updateShooter: { // args
+      division: string; // String!
+      id: number; // Int!
+      name: string; // String!
+    }
   }
   Query: {
+    getShooter: { // args
+      id: number; // Int!
+    }
     getStage: { // args
       id: number; // Int!
     }
@@ -181,7 +222,7 @@ export type NexusGenObjectNames = keyof NexusGenObjects;
 
 export type NexusGenInputNames = never;
 
-export type NexusGenEnumNames = never;
+export type NexusGenEnumNames = keyof NexusGenEnums;
 
 export type NexusGenInterfaceNames = never;
 
