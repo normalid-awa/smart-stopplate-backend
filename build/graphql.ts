@@ -27,20 +27,15 @@ export enum Division {
   Standard = 'STANDARD'
 }
 
-export type Link = {
-  __typename?: 'Link';
-  description: Scalars['String']['output'];
-  id: Scalars['Int']['output'];
-  url: Scalars['String']['output'];
-};
-
 export type Mutation = {
   __typename?: 'Mutation';
   createShooter: Shooter;
   createStage: Stage;
+  deleteShooter: Shooter;
   deleteStage: Stage;
   lockStage: Stage;
   updateShooter: Shooter;
+  updateStage: Stage;
 };
 
 
@@ -60,6 +55,11 @@ export type MutationCreateStageArgs = {
 };
 
 
+export type MutationDeleteShooterArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
 export type MutationDeleteStageArgs = {
   id: Scalars['Int']['input'];
 };
@@ -76,9 +76,19 @@ export type MutationUpdateShooterArgs = {
   name: Scalars['String']['input'];
 };
 
+
+export type MutationUpdateStageArgs = {
+  condition: Scalars['Int']['input'];
+  description: Scalars['String']['input'];
+  id: Scalars['Int']['input'];
+  name: Scalars['String']['input'];
+  noShoots: Scalars['Int']['input'];
+  paperTargets: Scalars['Int']['input'];
+  popperTargets: Scalars['Int']['input'];
+};
+
 export type Query = {
   __typename?: 'Query';
-  feed: Array<Link>;
   getAllShooters: Array<Maybe<Shooter>>;
   getAllStages: Array<Stage>;
   getShooter?: Maybe<Shooter>;
@@ -124,7 +134,6 @@ export type Subscription = {
   __typename?: 'Subscription';
   subscribeToShooterUpdate: Scalars['Boolean']['output'];
   subscribeToStageUpdate: Scalars['Boolean']['output'];
-  truths: Scalars['Int']['output'];
 };
 
 
@@ -202,7 +211,6 @@ export type ResolversTypes = {
   DateTime: ResolverTypeWrapper<Scalars['DateTime']['output']>;
   Division: Division;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
-  Link: ResolverTypeWrapper<Link>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   Shooter: ResolverTypeWrapper<Shooter>;
@@ -216,7 +224,6 @@ export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
   DateTime: Scalars['DateTime']['output'];
   Int: Scalars['Int']['output'];
-  Link: Link;
   Mutation: {};
   Query: {};
   Shooter: Shooter;
@@ -229,23 +236,17 @@ export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversT
   name: 'DateTime';
 }
 
-export type LinkResolvers<ContextType = any, ParentType extends ResolversParentTypes['Link'] = ResolversParentTypes['Link']> = {
-  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  url?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   createShooter?: Resolver<ResolversTypes['Shooter'], ParentType, ContextType, RequireFields<MutationCreateShooterArgs, 'division' | 'name'>>;
   createStage?: Resolver<ResolversTypes['Stage'], ParentType, ContextType, RequireFields<MutationCreateStageArgs, 'condition' | 'description' | 'name' | 'noShoots' | 'paperTargets' | 'popperTargets'>>;
+  deleteShooter?: Resolver<ResolversTypes['Shooter'], ParentType, ContextType, RequireFields<MutationDeleteShooterArgs, 'id'>>;
   deleteStage?: Resolver<ResolversTypes['Stage'], ParentType, ContextType, RequireFields<MutationDeleteStageArgs, 'id'>>;
   lockStage?: Resolver<ResolversTypes['Stage'], ParentType, ContextType, RequireFields<MutationLockStageArgs, 'id'>>;
   updateShooter?: Resolver<ResolversTypes['Shooter'], ParentType, ContextType, RequireFields<MutationUpdateShooterArgs, 'division' | 'id' | 'name'>>;
+  updateStage?: Resolver<ResolversTypes['Stage'], ParentType, ContextType, RequireFields<MutationUpdateStageArgs, 'condition' | 'description' | 'id' | 'name' | 'noShoots' | 'paperTargets' | 'popperTargets'>>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  feed?: Resolver<Array<ResolversTypes['Link']>, ParentType, ContextType>;
   getAllShooters?: Resolver<Array<Maybe<ResolversTypes['Shooter']>>, ParentType, ContextType>;
   getAllStages?: Resolver<Array<ResolversTypes['Stage']>, ParentType, ContextType>;
   getShooter?: Resolver<Maybe<ResolversTypes['Shooter']>, ParentType, ContextType, RequireFields<QueryGetShooterArgs, 'id'>>;
@@ -279,12 +280,10 @@ export type StageResolvers<ContextType = any, ParentType extends ResolversParent
 export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = {
   subscribeToShooterUpdate?: SubscriptionResolver<ResolversTypes['Boolean'], "subscribeToShooterUpdate", ParentType, ContextType>;
   subscribeToStageUpdate?: SubscriptionResolver<ResolversTypes['Boolean'], "subscribeToStageUpdate", ParentType, ContextType>;
-  truths?: SubscriptionResolver<ResolversTypes['Int'], "truths", ParentType, ContextType>;
 };
 
 export type Resolvers<ContextType = any> = {
   DateTime?: GraphQLScalarType;
-  Link?: LinkResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Shooter?: ShooterResolvers<ContextType>;

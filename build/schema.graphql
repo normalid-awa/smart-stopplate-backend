@@ -16,12 +16,6 @@ enum Division {
   STANDARD
 }
 
-type Link {
-  description: String!
-  id: Int!
-  url: String!
-}
-
 type Mutation {
   createShooter(division: String!, name: String!): Shooter!
   createStage(condition: Int!, description: String!, name: String!, noShoots: Int!, paperTargets: Int!, popperTargets: Int!): Stage!
@@ -33,7 +27,6 @@ type Mutation {
 }
 
 type Query {
-  feed: [Link!]!
   getAllShooters: [Shooter]!
   getAllStages: [Stage!]!
   getShooter(id: Int!): Shooter

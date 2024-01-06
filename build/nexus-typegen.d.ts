@@ -45,11 +45,6 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
-  Link: { // root type
-    description: string; // String!
-    id: number; // Int!
-    url: string; // String!
-  }
   Mutation: {};
   Query: {};
   Shooter: { // root type
@@ -83,11 +78,6 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
-  Link: { // field return type
-    description: string; // String!
-    id: number; // Int!
-    url: string; // String!
-  }
   Mutation: { // field return type
     createShooter: NexusGenRootTypes['Shooter']; // Shooter!
     createStage: NexusGenRootTypes['Stage']; // Stage!
@@ -98,7 +88,6 @@ export interface NexusGenFieldTypes {
     updateStage: NexusGenRootTypes['Stage']; // Stage!
   }
   Query: { // field return type
-    feed: NexusGenRootTypes['Link'][]; // [Link!]!
     getAllShooters: Array<NexusGenRootTypes['Shooter'] | null>; // [Shooter]!
     getAllStages: NexusGenRootTypes['Stage'][]; // [Stage!]!
     getShooter: NexusGenRootTypes['Shooter'] | null; // Shooter
@@ -131,11 +120,6 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenFieldTypeNames {
-  Link: { // field return type name
-    description: 'String'
-    id: 'Int'
-    url: 'String'
-  }
   Mutation: { // field return type name
     createShooter: 'Shooter'
     createStage: 'Stage'
@@ -146,7 +130,6 @@ export interface NexusGenFieldTypeNames {
     updateStage: 'Stage'
   }
   Query: { // field return type name
-    feed: 'Link'
     getAllShooters: 'Shooter'
     getAllStages: 'Stage'
     getShooter: 'Shooter'
