@@ -29,13 +29,57 @@ export enum Division {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  assignScore: Score;
+  createScore: Score;
+  createScoreboard: Scoreboard;
+  createScorelist: Scorelist;
   createShooter: Shooter;
   createStage: Stage;
+  deleteScore: Score;
+  deleteScoreboard: Scoreboard;
+  deleteScorelist: Scorelist;
   deleteShooter: Shooter;
   deleteStage: Stage;
+  lockScoreboard: Scoreboard;
+  lockScorelist: Scorelist;
   lockStage: Stage;
+  resetScore: Score;
+  setScoreDNF: Score;
+  setScoreDQ: Score;
+  updateScore: Score;
+  updateScoreboard: Scoreboard;
   updateShooter: Shooter;
   updateStage: Stage;
+};
+
+
+export type MutationAssignScoreArgs = {
+  alphaZone: Scalars['Int']['input'];
+  charlieZone: Scalars['Int']['input'];
+  deltaZone: Scalars['Int']['input'];
+  id: Scalars['Int']['input'];
+  miss: Scalars['Int']['input'];
+  noShoots: Scalars['Int']['input'];
+  poppers: Scalars['Int']['input'];
+  proError: Scalars['Int']['input'];
+  time: Scalars['Float']['input'];
+};
+
+
+export type MutationCreateScoreArgs = {
+  scorelistId: Scalars['Int']['input'];
+  shooterId: Scalars['Int']['input'];
+};
+
+
+export type MutationCreateScoreboardArgs = {
+  name: Scalars['String']['input'];
+};
+
+
+export type MutationCreateScorelistArgs = {
+  scoreboardId: Scalars['Int']['input'];
+  stageId: Scalars['Int']['input'];
 };
 
 
@@ -55,6 +99,21 @@ export type MutationCreateStageArgs = {
 };
 
 
+export type MutationDeleteScoreArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationDeleteScoreboardArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationDeleteScorelistArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
 export type MutationDeleteShooterArgs = {
   id: Scalars['Int']['input'];
 };
@@ -65,8 +124,52 @@ export type MutationDeleteStageArgs = {
 };
 
 
+export type MutationLockScoreboardArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationLockScorelistArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
 export type MutationLockStageArgs = {
   id: Scalars['Int']['input'];
+};
+
+
+export type MutationResetScoreArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationSetScoreDnfArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationSetScoreDqArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationUpdateScoreArgs = {
+  alphaZone: Scalars['Int']['input'];
+  charlieZone: Scalars['Int']['input'];
+  deltaZone: Scalars['Int']['input'];
+  id: Scalars['Int']['input'];
+  miss: Scalars['Int']['input'];
+  noShoots: Scalars['Int']['input'];
+  poppers: Scalars['Int']['input'];
+  proError: Scalars['Int']['input'];
+  time: Scalars['Float']['input'];
+};
+
+
+export type MutationUpdateScoreboardArgs = {
+  id: Scalars['Int']['input'];
+  name: Scalars['String']['input'];
 };
 
 
@@ -108,16 +211,39 @@ export type QueryGetStageArgs = {
 /** The single record in Scorelist */
 export type Score = {
   __typename?: 'Score';
+  alphaZone: Scalars['Int']['output'];
+  charlieZone: Scalars['Int']['output'];
   createdAt: Scalars['DateTime']['output'];
+  deltaZone: Scalars['Int']['output'];
+  hitFactor: Scalars['Int']['output'];
   id: Scalars['Int']['output'];
+  miss: Scalars['Int']['output'];
+  noShoots: Scalars['Int']['output'];
+  poppers: Scalars['Int']['output'];
+  proError: Scalars['Int']['output'];
+  scoreState: ScoreState;
   scorelist: Scorelist;
+  shooter: Shooter;
+  time: Scalars['Int']['output'];
+  totalScore: Scalars['Int']['output'];
 };
+
+/** Score state */
+export enum ScoreState {
+  Dnf = 'DNF',
+  Dq = 'DQ',
+  HaveNotScoredYet = 'HAVE_NOT_SCORED_YET',
+  Scored = 'SCORED'
+}
 
 /** The the collection of Scorelist */
 export type Scoreboard = {
   __typename?: 'Scoreboard';
   createdAt: Scalars['DateTime']['output'];
   id: Scalars['Int']['output'];
+  isLocked: Scalars['Boolean']['output'];
+  name: Scalars['String']['output'];
+  scorelists: Array<Scorelist>;
 };
 
 /** The the collection of Score */
@@ -125,6 +251,10 @@ export type Scorelist = {
   __typename?: 'Scorelist';
   createdAt: Scalars['DateTime']['output'];
   id: Scalars['Int']['output'];
+  isLocked: Scalars['Boolean']['output'];
+  scoreboard: Scoreboard;
+  scores: Array<Score>;
+  stage: Stage;
 };
 
 export type Shooter = {
@@ -161,6 +291,9 @@ export enum StageType {
 
 export type Subscription = {
   __typename?: 'Subscription';
+  subscribeToScoreUpdate: Scalars['Boolean']['output'];
+  subscribeToScoreboardUpdate: Scalars['Boolean']['output'];
+  subscribeToScorelistUpdate: Scalars['Boolean']['output'];
   subscribeToShooterUpdate: Scalars['Boolean']['output'];
   subscribeToStageUpdate: Scalars['Boolean']['output'];
 };
@@ -239,10 +372,12 @@ export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']['output']>;
   Division: Division;
+  Float: ResolverTypeWrapper<Scalars['Float']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   Score: ResolverTypeWrapper<Score>;
+  ScoreState: ScoreState;
   Scoreboard: ResolverTypeWrapper<Scoreboard>;
   Scorelist: ResolverTypeWrapper<Scorelist>;
   Shooter: ResolverTypeWrapper<Shooter>;
@@ -256,6 +391,7 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
   DateTime: Scalars['DateTime']['output'];
+  Float: Scalars['Float']['output'];
   Int: Scalars['Int']['output'];
   Mutation: {};
   Query: {};
@@ -273,11 +409,25 @@ export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversT
 }
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  assignScore?: Resolver<ResolversTypes['Score'], ParentType, ContextType, RequireFields<MutationAssignScoreArgs, 'alphaZone' | 'charlieZone' | 'deltaZone' | 'id' | 'miss' | 'noShoots' | 'poppers' | 'proError' | 'time'>>;
+  createScore?: Resolver<ResolversTypes['Score'], ParentType, ContextType, RequireFields<MutationCreateScoreArgs, 'scorelistId' | 'shooterId'>>;
+  createScoreboard?: Resolver<ResolversTypes['Scoreboard'], ParentType, ContextType, RequireFields<MutationCreateScoreboardArgs, 'name'>>;
+  createScorelist?: Resolver<ResolversTypes['Scorelist'], ParentType, ContextType, RequireFields<MutationCreateScorelistArgs, 'scoreboardId' | 'stageId'>>;
   createShooter?: Resolver<ResolversTypes['Shooter'], ParentType, ContextType, RequireFields<MutationCreateShooterArgs, 'division' | 'name'>>;
   createStage?: Resolver<ResolversTypes['Stage'], ParentType, ContextType, RequireFields<MutationCreateStageArgs, 'condition' | 'description' | 'name' | 'noShoots' | 'paperTargets' | 'popperTargets'>>;
+  deleteScore?: Resolver<ResolversTypes['Score'], ParentType, ContextType, RequireFields<MutationDeleteScoreArgs, 'id'>>;
+  deleteScoreboard?: Resolver<ResolversTypes['Scoreboard'], ParentType, ContextType, RequireFields<MutationDeleteScoreboardArgs, 'id'>>;
+  deleteScorelist?: Resolver<ResolversTypes['Scorelist'], ParentType, ContextType, RequireFields<MutationDeleteScorelistArgs, 'id'>>;
   deleteShooter?: Resolver<ResolversTypes['Shooter'], ParentType, ContextType, RequireFields<MutationDeleteShooterArgs, 'id'>>;
   deleteStage?: Resolver<ResolversTypes['Stage'], ParentType, ContextType, RequireFields<MutationDeleteStageArgs, 'id'>>;
+  lockScoreboard?: Resolver<ResolversTypes['Scoreboard'], ParentType, ContextType, RequireFields<MutationLockScoreboardArgs, 'id'>>;
+  lockScorelist?: Resolver<ResolversTypes['Scorelist'], ParentType, ContextType, RequireFields<MutationLockScorelistArgs, 'id'>>;
   lockStage?: Resolver<ResolversTypes['Stage'], ParentType, ContextType, RequireFields<MutationLockStageArgs, 'id'>>;
+  resetScore?: Resolver<ResolversTypes['Score'], ParentType, ContextType, RequireFields<MutationResetScoreArgs, 'id'>>;
+  setScoreDNF?: Resolver<ResolversTypes['Score'], ParentType, ContextType, RequireFields<MutationSetScoreDnfArgs, 'id'>>;
+  setScoreDQ?: Resolver<ResolversTypes['Score'], ParentType, ContextType, RequireFields<MutationSetScoreDqArgs, 'id'>>;
+  updateScore?: Resolver<ResolversTypes['Score'], ParentType, ContextType, RequireFields<MutationUpdateScoreArgs, 'alphaZone' | 'charlieZone' | 'deltaZone' | 'id' | 'miss' | 'noShoots' | 'poppers' | 'proError' | 'time'>>;
+  updateScoreboard?: Resolver<ResolversTypes['Scoreboard'], ParentType, ContextType, RequireFields<MutationUpdateScoreboardArgs, 'id' | 'name'>>;
   updateShooter?: Resolver<ResolversTypes['Shooter'], ParentType, ContextType, RequireFields<MutationUpdateShooterArgs, 'division' | 'id' | 'name'>>;
   updateStage?: Resolver<ResolversTypes['Stage'], ParentType, ContextType, RequireFields<MutationUpdateStageArgs, 'condition' | 'description' | 'id' | 'name' | 'noShoots' | 'paperTargets' | 'popperTargets'>>;
 };
@@ -290,21 +440,40 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 };
 
 export type ScoreResolvers<ContextType = any, ParentType extends ResolversParentTypes['Score'] = ResolversParentTypes['Score']> = {
+  alphaZone?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  charlieZone?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  deltaZone?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  hitFactor?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  miss?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  noShoots?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  poppers?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  proError?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  scoreState?: Resolver<ResolversTypes['ScoreState'], ParentType, ContextType>;
   scorelist?: Resolver<ResolversTypes['Scorelist'], ParentType, ContextType>;
+  shooter?: Resolver<ResolversTypes['Shooter'], ParentType, ContextType>;
+  time?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  totalScore?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type ScoreboardResolvers<ContextType = any, ParentType extends ResolversParentTypes['Scoreboard'] = ResolversParentTypes['Scoreboard']> = {
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  isLocked?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  scorelists?: Resolver<Array<ResolversTypes['Scorelist']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type ScorelistResolvers<ContextType = any, ParentType extends ResolversParentTypes['Scorelist'] = ResolversParentTypes['Scorelist']> = {
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  isLocked?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  scoreboard?: Resolver<ResolversTypes['Scoreboard'], ParentType, ContextType>;
+  scores?: Resolver<Array<ResolversTypes['Score']>, ParentType, ContextType>;
+  stage?: Resolver<ResolversTypes['Stage'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -333,6 +502,9 @@ export type StageResolvers<ContextType = any, ParentType extends ResolversParent
 };
 
 export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = {
+  subscribeToScoreUpdate?: SubscriptionResolver<ResolversTypes['Boolean'], "subscribeToScoreUpdate", ParentType, ContextType>;
+  subscribeToScoreboardUpdate?: SubscriptionResolver<ResolversTypes['Boolean'], "subscribeToScoreboardUpdate", ParentType, ContextType>;
+  subscribeToScorelistUpdate?: SubscriptionResolver<ResolversTypes['Boolean'], "subscribeToScorelistUpdate", ParentType, ContextType>;
   subscribeToShooterUpdate?: SubscriptionResolver<ResolversTypes['Boolean'], "subscribeToShooterUpdate", ParentType, ContextType>;
   subscribeToStageUpdate?: SubscriptionResolver<ResolversTypes['Boolean'], "subscribeToStageUpdate", ParentType, ContextType>;
 };
