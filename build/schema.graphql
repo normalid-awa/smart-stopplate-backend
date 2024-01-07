@@ -17,11 +17,25 @@ enum Division {
 }
 
 type Mutation {
+  assignScore(alphaZone: Int!, charlieZone: Int!, deltaZone: Int!, id: Int!, miss: Int!, noShoots: Int!, poppers: Int!, proError: Int!, time: Float!): Score!
+  createScore(scorelistId: Int!, shooterId: Int!): Score!
+  createScoreboard(name: String!): Scoreboard!
+  createScorelist(scoreboardId: Int!, stageId: Int!): Scorelist!
   createShooter(division: String!, name: String!): Shooter!
   createStage(condition: Int!, description: String!, name: String!, noShoots: Int!, paperTargets: Int!, popperTargets: Int!): Stage!
+  deleteScore(id: Int!): Score!
+  deleteScoreboard(id: Int!): Scoreboard!
+  deleteScorelist(id: Int!): Scorelist!
   deleteShooter(id: Int!): Shooter!
   deleteStage(id: Int!): Stage!
+  lockScoreboard(id: Int!): Scoreboard!
+  lockScorelist(id: Int!): Scorelist!
   lockStage(id: Int!): Stage!
+  resetScore(id: Int!): Score!
+  setScoreDNF(id: Int!): Score!
+  setScoreDQ(id: Int!): Score!
+  updateScore(alphaZone: Int!, charlieZone: Int!, deltaZone: Int!, id: Int!, miss: Int!, noShoots: Int!, poppers: Int!, proError: Int!, time: Float!): Score!
+  updateScoreboard(id: Int!, name: String!): Scoreboard!
   updateShooter(division: String!, id: Int!, name: String!): Shooter!
   updateStage(condition: Int!, description: String!, id: Int!, name: String!, noShoots: Int!, paperTargets: Int!, popperTargets: Int!): Stage!
 }
@@ -45,16 +59,26 @@ type Score {
   noShoots: Int!
   poppers: Int!
   proError: Int!
+  scoreState: ScoreState!
   scorelist: Scorelist!
   shooter: Shooter!
   time: Int!
   totalScore: Int!
 }
 
+"""Score state"""
+enum ScoreState {
+  DNF
+  DQ
+  HAVE_NOT_SCORED_YET
+  SCORED
+}
+
 """The the collection of Scorelist"""
 type Scoreboard {
   createdAt: DateTime!
   id: Int!
+  isLocked: Boolean!
   name: String!
   scorelists: [Scorelist!]!
 }
@@ -63,6 +87,7 @@ type Scoreboard {
 type Scorelist {
   createdAt: DateTime!
   id: Int!
+  isLocked: Boolean!
   scoreboard: Scoreboard!
   scores: [Score!]!
   stage: Stage!
@@ -99,6 +124,9 @@ enum StageType {
 }
 
 type Subscription {
+  subscribeToScoreUpdate: Boolean!
+  subscribeToScoreboardUpdate: Boolean!
+  subscribeToScorelistUpdate: Boolean!
   subscribeToShooterUpdate: Boolean!
   subscribeToStageUpdate: Boolean!
 }

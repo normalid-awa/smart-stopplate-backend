@@ -58,6 +58,8 @@ model Scoreboard {
   createdAt DateTime @default(now())
   name      String
 
+  isLocked Boolean @default(false)
+
   Scorelists Scorelist[]
 }
 
@@ -71,7 +73,16 @@ model Scorelist {
   Scoreboard   Scoreboard @relation(fields: [scoreboardId], references: [id])
   scoreboardId Int
 
+  isLocked Boolean @default(false)
+
   Scores Score[]
+}
+
+enum ScoreState {
+  DQ
+  DNF
+  HAVE_NOT_SCORED_YET
+  SCORED
 }
 
 model Score {
@@ -84,19 +95,21 @@ model Score {
   Shooter   Shooter @relation(fields: [shooterId], references: [id])
   shooterId Int
 
-  alphaZone   Int
-  charlieZone Int
-  deltaZone   Int
-  noShoots    Int
-  miss        Int
+  alphaZone   Int @default(0)
+  charlieZone Int @default(0)
+  deltaZone   Int @default(0)
+  noShoots    Int @default(0)
+  miss        Int @default(0)
 
-  poppers Int
+  poppers Int @default(0)
 
-  proError Int
+  proError Int @default(0)
 
-  totalScore Int
+  totalScore Int @default(0)
 
-  time Float
+  time Float @default(0)
 
-  hitFactor Float
+  hitFactor Float @default(0)
+
+  scoreState ScoreState @default(HAVE_NOT_SCORED_YET)
 }

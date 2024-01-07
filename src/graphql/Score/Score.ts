@@ -1,4 +1,28 @@
-import { extendType, intArg, nonNull, objectType } from "nexus";
+import { GraphQLError } from "graphql";
+import {
+    arg,
+    extendType,
+    floatArg,
+    intArg,
+    nonNull,
+    objectType,
+    stringArg,
+} from "nexus";
+
+function calc_score(
+    a: number,
+    c: number,
+    d: number,
+    m: number,
+    pp: number,
+    ns: number,
+    pe: number
+) {
+    return a * 5 + c * 3 + d + pp * 5 - (ns * 10 + m * 10 + pe * 10);
+}
+function calc_hf(score: number, time: number) {
+    return score / time;
+}
 
 export const Score = objectType({
     name: "Score",
@@ -33,12 +57,268 @@ export const Score = objectType({
 
         t.nonNull.int("proError");
 
-        t.nonNull.int("totalScore");
+        t.nonNull.int("totalScore", {
+            resolve(src) {
+                return calc_score(
+                    src.alphaZone,
+                    src.charlieZone,
+                    src.deltaZone,
+                    src.miss,
+                    src.poppers,
+                    src.noShoots,
+                    src.proError
+                );
+            },
+        });
 
         t.nonNull.int("time");
 
-        t.nonNull.int("hitFactor");
+        t.nonNull.int("hitFactor", {
+            resolve(src, args, ctx, info) {
+                return calc_hf(
+                    calc_score(
+                        src.alphaZone,
+                        src.charlieZone,
+                        src.deltaZone,
+                        src.miss,
+                        src.poppers,
+                        src.noShoots,
+                        src.proError
+                    ),
+                    src.time
+                );
+            },
+        });
+
+        t.nonNull.field("scoreState", { type: "ScoreState" });
     },
 });
 
+export const ScoreMutation = extendType({
+    type: "Mutation",
+    definition(t) {
+        t.nonNull.field("createScore", {
+            type: "Score",
+            args: {
+                scorelistId: nonNull(intArg()),
+                shooterId: nonNull(intArg()),
+            },
+            resolve: (src, args, ctx, inf) => {
+                return ctx.prisma.score.create({
+                    data: {
+                        Scorelist: { connect: { id: args.scorelistId } },
+                        Shooter: { connect: { id: args.shooterId } },
+                    },
+                });
+            },
+        });
+        t.nonNull.field("assignScore", {
+            type: "Score",
+            args: {
+                id: nonNull(intArg()),
 
+                alphaZone: nonNull(intArg()),
+                charlieZone: nonNull(intArg()),
+                deltaZone: nonNull(intArg()),
+                noShoots: nonNull(intArg()),
+                miss: nonNull(intArg()),
+
+                poppers: nonNull(intArg()),
+                proError: nonNull(intArg()),
+                time: nonNull(floatArg()),
+            },
+            resolve: async (src, args, ctx, inf) => {
+                let score_record = await ctx.prisma.score.findUniqueOrThrow({
+                    where: {
+                        id: args.id,
+                    },
+                });
+                if (score_record.scoreState !== "HAVE_NOT_SCORED_YET") {
+                    throw new GraphQLError("The score have been assigned");
+                }
+
+                let score = calc_score(
+                    args.alphaZone,
+                    args.charlieZone,
+                    args.deltaZone,
+                    args.miss,
+                    args.poppers,
+                    args.noShoots,
+                    args.proError
+                );
+                return ctx.prisma.score.update({
+                    where: {
+                        id: args.id,
+                    },
+                    data: {
+                        alphaZone: args.alphaZone,
+                        charlieZone: args.charlieZone,
+                        deltaZone: args.deltaZone,
+                        noShoots: args.noShoots,
+                        miss: args.miss,
+                        poppers: args.poppers,
+                        proError: args.proError,
+                        totalScore: score,
+                        time: args.time,
+                        hitFactor: calc_hf(score, args.time),
+                        scoreState: "SCORED",
+                    },
+                });
+            },
+        });
+        t.nonNull.field("updateScore", {
+            type: "Score",
+            args: {
+                id: nonNull(intArg()),
+
+                alphaZone: nonNull(intArg()),
+                charlieZone: nonNull(intArg()),
+                deltaZone: nonNull(intArg()),
+                noShoots: nonNull(intArg()),
+                miss: nonNull(intArg()),
+
+                poppers: nonNull(intArg()),
+                proError: nonNull(intArg()),
+                time: nonNull(floatArg()),
+            },
+            resolve: async (src, args, ctx, inf) => {
+                let score_record = await ctx.prisma.score.findUniqueOrThrow({
+                    where: {
+                        id: args.id,
+                    },
+                });
+                if (score_record.scoreState !== "SCORED") {
+                    throw new GraphQLError("The score haven't assigned yet");
+                }
+
+                let score = calc_score(
+                    args.alphaZone,
+                    args.charlieZone,
+                    args.deltaZone,
+                    args.miss,
+                    args.poppers,
+                    args.noShoots,
+                    args.proError
+                );
+                return ctx.prisma.score.update({
+                    where: {
+                        id: args.id,
+                    },
+                    data: {
+                        alphaZone: args.alphaZone,
+                        charlieZone: args.charlieZone,
+                        deltaZone: args.deltaZone,
+                        noShoots: args.noShoots,
+                        miss: args.miss,
+                        poppers: args.poppers,
+                        proError: args.proError,
+                        totalScore: score,
+                        time: args.time,
+                        hitFactor: calc_hf(score, args.time),
+                    },
+                });
+            },
+        });
+        t.nonNull.field("setScoreDNF", {
+            type: "Score",
+            args: {
+                id: nonNull(intArg()),
+            },
+            resolve: (src, args, ctx, inf) => {
+                return ctx.prisma.score.update({
+                    where: {
+                        id: args.id,
+                    },
+                    data: {
+                        scoreState: "DNF",
+                    },
+                });
+            },
+        });
+        t.nonNull.field("setScoreDQ", {
+            type: "Score",
+            args: {
+                id: nonNull(intArg()),
+            },
+            resolve: (src, args, ctx, inf) => {
+                return ctx.prisma.score.update({
+                    where: {
+                        id: args.id,
+                    },
+                    data: {
+                        scoreState: "DQ",
+                    },
+                });
+            },
+        });
+        t.nonNull.field("resetScore", {
+            type: "Score",
+            args: {
+                id: nonNull(intArg()),
+            },
+            resolve: (src, args, ctx, inf) => {
+                return ctx.prisma.score.update({
+                    where: { id: args.id },
+                    data: {
+                        alphaZone: 0,
+                        charlieZone: 0,
+                        deltaZone: 0,
+                        noShoots: 0,
+                        miss: 0,
+                        poppers: 0,
+                        proError: 0,
+                        totalScore: 0,
+                        time: 0,
+                        hitFactor: 0,
+                        scoreState: "HAVE_NOT_SCORED_YET"
+                    },
+                });
+            },
+        });
+        t.nonNull.field("deleteScore", {
+            type: "Score",
+            args: {
+                id: nonNull(intArg()),
+            },
+            resolve: (src, args, ctx, inf) => {
+                return ctx.prisma.score.delete({ where: { id: args.id } });
+            },
+        });
+    },
+});
+
+export const ScoreSubscription = extendType({
+    type: "Subscription",
+    definition(t) {
+        t.nonNull.field("subscribeToScoreUpdate", {
+            type: "Boolean",
+            subscribe: async function* (src, args, ctx, info) {
+                while (true) {
+                    await new Promise<void>((resolve) => {
+                        let sub_id: number;
+                        sub_id = ctx.subscribe(
+                            "Score",
+                            [
+                                "create",
+                                "update",
+                                "delete",
+                                "deleteMany",
+                                "createMany",
+                                "updateMany",
+                                "upsert",
+                            ],
+                            () => {
+                                ctx.unsubscribe(sub_id);
+                                resolve();
+                            }
+                        );
+                    });
+                    yield true;
+                }
+            },
+            resolve(eventData) {
+                return eventData;
+            },
+        });
+    },
+});

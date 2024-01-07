@@ -33,6 +33,7 @@ export interface NexusGenInputs {
 
 export interface NexusGenEnums {
   Division: "CLASSIC" | "OPEN" | "PRODUCTION" | "PRODUCTIONOPTICS" | "STANDARD"
+  ScoreState: "DNF" | "DQ" | "HAVE_NOT_SCORED_YET" | "SCORED"
   StageType: "LONG" | "MEDIUM" | "OTHER" | "SHORT"
 }
 
@@ -53,23 +54,24 @@ export interface NexusGenObjects {
     charlieZone: number; // Int!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     deltaZone: number; // Int!
-    hitFactor: number; // Int!
     id: number; // Int!
     miss: number; // Int!
     noShoots: number; // Int!
     poppers: number; // Int!
     proError: number; // Int!
+    scoreState: NexusGenEnums['ScoreState']; // ScoreState!
     time: number; // Int!
-    totalScore: number; // Int!
   }
   Scoreboard: { // root type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: number; // Int!
+    isLocked: boolean; // Boolean!
     name: string; // String!
   }
   Scorelist: { // root type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: number; // Int!
+    isLocked: boolean; // Boolean!
   }
   Shooter: { // root type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -104,11 +106,25 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnu
 
 export interface NexusGenFieldTypes {
   Mutation: { // field return type
+    assignScore: NexusGenRootTypes['Score']; // Score!
+    createScore: NexusGenRootTypes['Score']; // Score!
+    createScoreboard: NexusGenRootTypes['Scoreboard']; // Scoreboard!
+    createScorelist: NexusGenRootTypes['Scorelist']; // Scorelist!
     createShooter: NexusGenRootTypes['Shooter']; // Shooter!
     createStage: NexusGenRootTypes['Stage']; // Stage!
+    deleteScore: NexusGenRootTypes['Score']; // Score!
+    deleteScoreboard: NexusGenRootTypes['Scoreboard']; // Scoreboard!
+    deleteScorelist: NexusGenRootTypes['Scorelist']; // Scorelist!
     deleteShooter: NexusGenRootTypes['Shooter']; // Shooter!
     deleteStage: NexusGenRootTypes['Stage']; // Stage!
+    lockScoreboard: NexusGenRootTypes['Scoreboard']; // Scoreboard!
+    lockScorelist: NexusGenRootTypes['Scorelist']; // Scorelist!
     lockStage: NexusGenRootTypes['Stage']; // Stage!
+    resetScore: NexusGenRootTypes['Score']; // Score!
+    setScoreDNF: NexusGenRootTypes['Score']; // Score!
+    setScoreDQ: NexusGenRootTypes['Score']; // Score!
+    updateScore: NexusGenRootTypes['Score']; // Score!
+    updateScoreboard: NexusGenRootTypes['Scoreboard']; // Scoreboard!
     updateShooter: NexusGenRootTypes['Shooter']; // Shooter!
     updateStage: NexusGenRootTypes['Stage']; // Stage!
   }
@@ -129,6 +145,7 @@ export interface NexusGenFieldTypes {
     noShoots: number; // Int!
     poppers: number; // Int!
     proError: number; // Int!
+    scoreState: NexusGenEnums['ScoreState']; // ScoreState!
     scorelist: NexusGenRootTypes['Scorelist']; // Scorelist!
     shooter: NexusGenRootTypes['Shooter']; // Shooter!
     time: number; // Int!
@@ -137,12 +154,14 @@ export interface NexusGenFieldTypes {
   Scoreboard: { // field return type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: number; // Int!
+    isLocked: boolean; // Boolean!
     name: string; // String!
     scorelists: NexusGenRootTypes['Scorelist'][]; // [Scorelist!]!
   }
   Scorelist: { // field return type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: number; // Int!
+    isLocked: boolean; // Boolean!
     scoreboard: NexusGenRootTypes['Scoreboard']; // Scoreboard!
     scores: NexusGenRootTypes['Score'][]; // [Score!]!
     stage: NexusGenRootTypes['Stage']; // Stage!
@@ -168,6 +187,9 @@ export interface NexusGenFieldTypes {
     type: NexusGenEnums['StageType']; // StageType!
   }
   Subscription: { // field return type
+    subscribeToScoreUpdate: boolean; // Boolean!
+    subscribeToScoreboardUpdate: boolean; // Boolean!
+    subscribeToScorelistUpdate: boolean; // Boolean!
     subscribeToShooterUpdate: boolean; // Boolean!
     subscribeToStageUpdate: boolean; // Boolean!
   }
@@ -175,11 +197,25 @@ export interface NexusGenFieldTypes {
 
 export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
+    assignScore: 'Score'
+    createScore: 'Score'
+    createScoreboard: 'Scoreboard'
+    createScorelist: 'Scorelist'
     createShooter: 'Shooter'
     createStage: 'Stage'
+    deleteScore: 'Score'
+    deleteScoreboard: 'Scoreboard'
+    deleteScorelist: 'Scorelist'
     deleteShooter: 'Shooter'
     deleteStage: 'Stage'
+    lockScoreboard: 'Scoreboard'
+    lockScorelist: 'Scorelist'
     lockStage: 'Stage'
+    resetScore: 'Score'
+    setScoreDNF: 'Score'
+    setScoreDQ: 'Score'
+    updateScore: 'Score'
+    updateScoreboard: 'Scoreboard'
     updateShooter: 'Shooter'
     updateStage: 'Stage'
   }
@@ -200,6 +236,7 @@ export interface NexusGenFieldTypeNames {
     noShoots: 'Int'
     poppers: 'Int'
     proError: 'Int'
+    scoreState: 'ScoreState'
     scorelist: 'Scorelist'
     shooter: 'Shooter'
     time: 'Int'
@@ -208,12 +245,14 @@ export interface NexusGenFieldTypeNames {
   Scoreboard: { // field return type name
     createdAt: 'DateTime'
     id: 'Int'
+    isLocked: 'Boolean'
     name: 'String'
     scorelists: 'Scorelist'
   }
   Scorelist: { // field return type name
     createdAt: 'DateTime'
     id: 'Int'
+    isLocked: 'Boolean'
     scoreboard: 'Scoreboard'
     scores: 'Score'
     stage: 'Stage'
@@ -239,6 +278,9 @@ export interface NexusGenFieldTypeNames {
     type: 'StageType'
   }
   Subscription: { // field return type name
+    subscribeToScoreUpdate: 'Boolean'
+    subscribeToScoreboardUpdate: 'Boolean'
+    subscribeToScorelistUpdate: 'Boolean'
     subscribeToShooterUpdate: 'Boolean'
     subscribeToStageUpdate: 'Boolean'
   }
@@ -246,6 +288,28 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    assignScore: { // args
+      alphaZone: number; // Int!
+      charlieZone: number; // Int!
+      deltaZone: number; // Int!
+      id: number; // Int!
+      miss: number; // Int!
+      noShoots: number; // Int!
+      poppers: number; // Int!
+      proError: number; // Int!
+      time: number; // Float!
+    }
+    createScore: { // args
+      scorelistId: number; // Int!
+      shooterId: number; // Int!
+    }
+    createScoreboard: { // args
+      name: string; // String!
+    }
+    createScorelist: { // args
+      scoreboardId: number; // Int!
+      stageId: number; // Int!
+    }
     createShooter: { // args
       division: string; // String!
       name: string; // String!
@@ -258,14 +322,53 @@ export interface NexusGenArgTypes {
       paperTargets: number; // Int!
       popperTargets: number; // Int!
     }
+    deleteScore: { // args
+      id: number; // Int!
+    }
+    deleteScoreboard: { // args
+      id: number; // Int!
+    }
+    deleteScorelist: { // args
+      id: number; // Int!
+    }
     deleteShooter: { // args
       id: number; // Int!
     }
     deleteStage: { // args
       id: number; // Int!
     }
+    lockScoreboard: { // args
+      id: number; // Int!
+    }
+    lockScorelist: { // args
+      id: number; // Int!
+    }
     lockStage: { // args
       id: number; // Int!
+    }
+    resetScore: { // args
+      id: number; // Int!
+    }
+    setScoreDNF: { // args
+      id: number; // Int!
+    }
+    setScoreDQ: { // args
+      id: number; // Int!
+    }
+    updateScore: { // args
+      alphaZone: number; // Int!
+      charlieZone: number; // Int!
+      deltaZone: number; // Int!
+      id: number; // Int!
+      miss: number; // Int!
+      noShoots: number; // Int!
+      poppers: number; // Int!
+      proError: number; // Int!
+      time: number; // Float!
+    }
+    updateScoreboard: { // args
+      id: number; // Int!
+      name: string; // String!
     }
     updateShooter: { // args
       division: string; // String!
