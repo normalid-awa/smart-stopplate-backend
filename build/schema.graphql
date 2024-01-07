@@ -33,6 +33,15 @@ type Query {
   getStage(id: Int!): Stage!
 }
 
+"""The single record in Scorelist"""
+type Score
+
+"""The the collection of Scorelist"""
+type Scoreboard
+
+"""The the collection of Score"""
+type Scorelist
+
 type Shooter {
   createdAt: DateTime!
   division: Division!

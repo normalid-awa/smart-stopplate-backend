@@ -29,6 +29,8 @@ model Stage {
   isLocked      Boolean   @default(false)
   condition     Int
   type          StageType
+
+  Scorelist Scorelist[]
 }
 
 enum Division {
@@ -44,4 +46,57 @@ model Shooter {
   createdAt DateTime @default(now())
   name      String
   division  Division
+  Score     Score[]
+}
+
+// A Scoreboard contains different Scorelist
+// *Scoreboard is the collection of scorelist
+// Scorelist contains every shooters score record and its refer to its own stage
+// Score is the single item of a single score record(e.g. time, hf, etc..)
+model Scoreboard {
+  id        Int         @id @unique @default(autoincrement())
+  createdAt DateTime    @default(now())
+  name      String
+
+  Scorelists Scorelist[]
+}
+
+model Scorelist {
+  id        Int      @id @unique @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  stage   Stage @relation(fields: [stageId], references: [id])
+  stageId Int
+
+  Scoreboard   Scoreboard? @relation(fields: [scoreboardId], references: [id])
+  scoreboardId Int?
+
+  scores        Score[]
+}
+
+model Score {
+  id        Int      @id @unique @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  Scorelist   Scorelist? @relation(fields: [scorelistId], references: [id])
+  scorelistId Int?
+
+  Shooter   Shooter @relation(fields: [shooterId], references: [id])
+  shooterId Int
+
+  alphaZone   Int
+  charlieZone Int
+  deltaZone   Int
+  noShoots    Int
+  miss        Int
+
+  poppers Int
+
+  proError Int
+
+  totalScore Int
+
+  time Float
+
+  hitFactor Float
 }

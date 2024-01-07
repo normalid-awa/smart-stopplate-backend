@@ -126,9 +126,16 @@ export type Stage = {
   noShoots: Scalars['Int']['output'];
   paperTargets: Scalars['Int']['output'];
   popperTargets: Scalars['Int']['output'];
-  /** only return short,medium,long and other */
-  type: Scalars['String']['output'];
+  type: StageType;
 };
+
+/** Stage type */
+export enum StageType {
+  Long = 'LONG',
+  Medium = 'MEDIUM',
+  Other = 'OTHER',
+  Short = 'SHORT'
+}
 
 export type Subscription = {
   __typename?: 'Subscription';
@@ -215,6 +222,7 @@ export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>;
   Shooter: ResolverTypeWrapper<Shooter>;
   Stage: ResolverTypeWrapper<Stage>;
+  StageType: StageType;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   Subscription: ResolverTypeWrapper<{}>;
 };
@@ -273,7 +281,7 @@ export type StageResolvers<ContextType = any, ParentType extends ResolversParent
   noShoots?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   paperTargets?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   popperTargets?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['StageType'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
