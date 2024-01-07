@@ -1,3 +1,4 @@
+import { StageType } from "@prisma/client";
 import {
     extendType,
     idArg,
@@ -8,6 +9,19 @@ import {
     subscriptionField,
     subscriptionType,
 } from "nexus";
+
+function determine_stage_type(pappers: number, poppers: number): StageType {
+    let max = pappers * 2 + poppers;
+    if (max <= 12) {
+        return "SHORT";
+    } else if (max <= 24) {
+        return "MEDIUM";
+    } else if (max <= 32) {
+        return "LONG";
+    } else {
+        return "OTHER";
+    }
+}
 
 export const Stage = objectType({
     name: "Stage", // 1
@@ -32,21 +46,7 @@ export const Stage = objectType({
                 return src.paperTargets * 2 * 5 + src.popperTargets * 5;
             },
         });
-        t.nonNull.string("type", {
-            description: "only return short,medium,long and other",
-            resolve: (src, args, ctx, inf) => {
-                let max = src.paperTargets * 2 + src.popperTargets;
-                if (max <= 12) {
-                    return "short";
-                } else if (max <= 24) {
-                    return "medium";
-                } else if (max <= 32) {
-                    return "long";
-                } else {
-                    return "other";
-                }
-            },
-        });
+        t.nonNull.field("type", { type: "StageType" });
     },
 });
 
@@ -89,6 +89,10 @@ export const StageMutation = extendType({
             resolve: (src, args, ctx, inf) => {
                 return ctx.prisma.stage.create({
                     data: {
+                        type: determine_stage_type(
+                            args.paperTargets,
+                            args.popperTargets
+                        ),
                         description: args.description,
                         name: args.name,
                         noShoots: args.noShoots,
@@ -116,6 +120,10 @@ export const StageMutation = extendType({
                         id: args.id,
                     },
                     data: {
+                        type: determine_stage_type(
+                            args.paperTargets,
+                            args.popperTargets
+                        ),
                         description: args.description,
                         name: args.name,
                         noShoots: args.noShoots,

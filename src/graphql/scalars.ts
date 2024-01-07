@@ -8,3 +8,9 @@ export const Division = enumType({
     members: ["OPEN", "STANDARD", "PRODUCTION", "PRODUCTIONOPTICS", "CLASSIC"],
     description: "Shooter divisons",
 });
+
+export const StageType = enumType({
+    name: "StageType",
+    members: ["LONG", "SHORT", "MEDIUM", "OTHER"],
+    description: "Stage type",
+});

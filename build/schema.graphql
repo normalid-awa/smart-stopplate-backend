@@ -52,9 +52,15 @@ type Stage {
   noShoots: Int!
   paperTargets: Int!
   popperTargets: Int!
+  type: StageType!
+}
 
-  """only return short,medium,long and other"""
-  type: String!
+"""Stage type"""
+enum StageType {
+  LONG
+  MEDIUM
+  OTHER
+  SHORT
 }
 
 type Subscription {

@@ -11,17 +11,24 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum StageType {
+  LONG
+  MEDIUM
+  SHORT
+  OTHER
+}
 
 model Stage {
-  id            Int      @id @unique @default(autoincrement())
-  createdAt     DateTime @default(now())
+  id            Int       @id @unique @default(autoincrement())
+  createdAt     DateTime  @default(now())
   name          String
   description   String
   paperTargets  Int
   noShoots      Int
   popperTargets Int
-  isLocked      Boolean  @default(false)
+  isLocked      Boolean   @default(false)
   condition     Int
+  type          StageType
 }
 
 enum Division {

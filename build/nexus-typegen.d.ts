@@ -33,6 +33,7 @@ export interface NexusGenInputs {
 
 export interface NexusGenEnums {
   Division: "CLASSIC" | "OPEN" | "PRODUCTION" | "PRODUCTIONOPTICS" | "STANDARD"
+  StageType: "LONG" | "MEDIUM" | "OTHER" | "SHORT"
 }
 
 export interface NexusGenScalars {
@@ -63,6 +64,7 @@ export interface NexusGenObjects {
     noShoots: number; // Int!
     paperTargets: number; // Int!
     popperTargets: number; // Int!
+    type: NexusGenEnums['StageType']; // StageType!
   }
   Subscription: {};
 }
@@ -111,7 +113,7 @@ export interface NexusGenFieldTypes {
     noShoots: number; // Int!
     paperTargets: number; // Int!
     popperTargets: number; // Int!
-    type: string; // String!
+    type: NexusGenEnums['StageType']; // StageType!
   }
   Subscription: { // field return type
     subscribeToShooterUpdate: boolean; // Boolean!
@@ -153,7 +155,7 @@ export interface NexusGenFieldTypeNames {
     noShoots: 'Int'
     paperTargets: 'Int'
     popperTargets: 'Int'
-    type: 'String'
+    type: 'StageType'
   }
   Subscription: { // field return type name
     subscribeToShooterUpdate: 'Boolean'
