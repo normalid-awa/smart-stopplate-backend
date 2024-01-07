@@ -2,7 +2,6 @@ import { makeSchema } from "nexus";
 import { join } from "path";
 import * as types from "./graphql";   // 1
 
-
 export const schema = makeSchema({
     types: types, // 1
     outputs: {

@@ -34,13 +34,39 @@ type Query {
 }
 
 """The single record in Scorelist"""
-type Score
+type Score {
+  alphaZone: Int!
+  charlieZone: Int!
+  createdAt: DateTime!
+  deltaZone: Int!
+  hitFactor: Int!
+  id: Int!
+  miss: Int!
+  noShoots: Int!
+  poppers: Int!
+  proError: Int!
+  scorelist: Scorelist!
+  shooter: Shooter!
+  time: Int!
+  totalScore: Int!
+}
 
 """The the collection of Scorelist"""
-type Scoreboard
+type Scoreboard {
+  createdAt: DateTime!
+  id: Int!
+  name: String!
+  scorelists: [Scorelist!]!
+}
 
 """The the collection of Score"""
-type Scorelist
+type Scorelist {
+  createdAt: DateTime!
+  id: Int!
+  scoreboard: Scoreboard!
+  scores: [Score!]!
+  stage: Stage!
+}
 
 type Shooter {
   createdAt: DateTime!

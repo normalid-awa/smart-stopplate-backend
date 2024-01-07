@@ -105,6 +105,28 @@ export type QueryGetStageArgs = {
   id: Scalars['Int']['input'];
 };
 
+/** The single record in Scorelist */
+export type Score = {
+  __typename?: 'Score';
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  scorelist: Scorelist;
+};
+
+/** The the collection of Scorelist */
+export type Scoreboard = {
+  __typename?: 'Scoreboard';
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+};
+
+/** The the collection of Score */
+export type Scorelist = {
+  __typename?: 'Scorelist';
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+};
+
 export type Shooter = {
   __typename?: 'Shooter';
   createdAt: Scalars['DateTime']['output'];
@@ -220,6 +242,9 @@ export type ResolversTypes = {
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
+  Score: ResolverTypeWrapper<Score>;
+  Scoreboard: ResolverTypeWrapper<Scoreboard>;
+  Scorelist: ResolverTypeWrapper<Scorelist>;
   Shooter: ResolverTypeWrapper<Shooter>;
   Stage: ResolverTypeWrapper<Stage>;
   StageType: StageType;
@@ -234,6 +259,9 @@ export type ResolversParentTypes = {
   Int: Scalars['Int']['output'];
   Mutation: {};
   Query: {};
+  Score: Score;
+  Scoreboard: Scoreboard;
+  Scorelist: Scorelist;
   Shooter: Shooter;
   Stage: Stage;
   String: Scalars['String']['output'];
@@ -259,6 +287,25 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getAllStages?: Resolver<Array<ResolversTypes['Stage']>, ParentType, ContextType>;
   getShooter?: Resolver<Maybe<ResolversTypes['Shooter']>, ParentType, ContextType, RequireFields<QueryGetShooterArgs, 'id'>>;
   getStage?: Resolver<ResolversTypes['Stage'], ParentType, ContextType, RequireFields<QueryGetStageArgs, 'id'>>;
+};
+
+export type ScoreResolvers<ContextType = any, ParentType extends ResolversParentTypes['Score'] = ResolversParentTypes['Score']> = {
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  scorelist?: Resolver<ResolversTypes['Scorelist'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ScoreboardResolvers<ContextType = any, ParentType extends ResolversParentTypes['Scoreboard'] = ResolversParentTypes['Scoreboard']> = {
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ScorelistResolvers<ContextType = any, ParentType extends ResolversParentTypes['Scorelist'] = ResolversParentTypes['Scorelist']> = {
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type ShooterResolvers<ContextType = any, ParentType extends ResolversParentTypes['Shooter'] = ResolversParentTypes['Shooter']> = {
@@ -294,6 +341,9 @@ export type Resolvers<ContextType = any> = {
   DateTime?: GraphQLScalarType;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  Score?: ScoreResolvers<ContextType>;
+  Scoreboard?: ScoreboardResolvers<ContextType>;
+  Scorelist?: ScorelistResolvers<ContextType>;
   Shooter?: ShooterResolvers<ContextType>;
   Stage?: StageResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;

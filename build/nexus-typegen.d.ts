@@ -48,6 +48,29 @@ export interface NexusGenScalars {
 export interface NexusGenObjects {
   Mutation: {};
   Query: {};
+  Score: { // root type
+    alphaZone: number; // Int!
+    charlieZone: number; // Int!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    deltaZone: number; // Int!
+    hitFactor: number; // Int!
+    id: number; // Int!
+    miss: number; // Int!
+    noShoots: number; // Int!
+    poppers: number; // Int!
+    proError: number; // Int!
+    time: number; // Int!
+    totalScore: number; // Int!
+  }
+  Scoreboard: { // root type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    id: number; // Int!
+    name: string; // String!
+  }
+  Scorelist: { // root type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    id: number; // Int!
+  }
   Shooter: { // root type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     division: NexusGenEnums['Division']; // Division!
@@ -95,6 +118,35 @@ export interface NexusGenFieldTypes {
     getShooter: NexusGenRootTypes['Shooter'] | null; // Shooter
     getStage: NexusGenRootTypes['Stage']; // Stage!
   }
+  Score: { // field return type
+    alphaZone: number; // Int!
+    charlieZone: number; // Int!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    deltaZone: number; // Int!
+    hitFactor: number; // Int!
+    id: number; // Int!
+    miss: number; // Int!
+    noShoots: number; // Int!
+    poppers: number; // Int!
+    proError: number; // Int!
+    scorelist: NexusGenRootTypes['Scorelist']; // Scorelist!
+    shooter: NexusGenRootTypes['Shooter']; // Shooter!
+    time: number; // Int!
+    totalScore: number; // Int!
+  }
+  Scoreboard: { // field return type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    id: number; // Int!
+    name: string; // String!
+    scorelists: NexusGenRootTypes['Scorelist'][]; // [Scorelist!]!
+  }
+  Scorelist: { // field return type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    id: number; // Int!
+    scoreboard: NexusGenRootTypes['Scoreboard']; // Scoreboard!
+    scores: NexusGenRootTypes['Score'][]; // [Score!]!
+    stage: NexusGenRootTypes['Stage']; // Stage!
+  }
   Shooter: { // field return type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     division: NexusGenEnums['Division']; // Division!
@@ -136,6 +188,35 @@ export interface NexusGenFieldTypeNames {
     getAllStages: 'Stage'
     getShooter: 'Shooter'
     getStage: 'Stage'
+  }
+  Score: { // field return type name
+    alphaZone: 'Int'
+    charlieZone: 'Int'
+    createdAt: 'DateTime'
+    deltaZone: 'Int'
+    hitFactor: 'Int'
+    id: 'Int'
+    miss: 'Int'
+    noShoots: 'Int'
+    poppers: 'Int'
+    proError: 'Int'
+    scorelist: 'Scorelist'
+    shooter: 'Shooter'
+    time: 'Int'
+    totalScore: 'Int'
+  }
+  Scoreboard: { // field return type name
+    createdAt: 'DateTime'
+    id: 'Int'
+    name: 'String'
+    scorelists: 'Scorelist'
+  }
+  Scorelist: { // field return type name
+    createdAt: 'DateTime'
+    id: 'Int'
+    scoreboard: 'Scoreboard'
+    scores: 'Score'
+    stage: 'Stage'
   }
   Shooter: { // field return type name
     createdAt: 'DateTime'

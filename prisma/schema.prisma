@@ -54,8 +54,8 @@ model Shooter {
 // Scorelist contains every shooters score record and its refer to its own stage
 // Score is the single item of a single score record(e.g. time, hf, etc..)
 model Scoreboard {
-  id        Int         @id @unique @default(autoincrement())
-  createdAt DateTime    @default(now())
+  id        Int      @id @unique @default(autoincrement())
+  createdAt DateTime @default(now())
   name      String
 
   Scorelists Scorelist[]
@@ -65,21 +65,21 @@ model Scorelist {
   id        Int      @id @unique @default(autoincrement())
   createdAt DateTime @default(now())
 
-  stage   Stage @relation(fields: [stageId], references: [id])
+  Stage   Stage @relation(fields: [stageId], references: [id])
   stageId Int
 
-  Scoreboard   Scoreboard? @relation(fields: [scoreboardId], references: [id])
-  scoreboardId Int?
+  Scoreboard   Scoreboard @relation(fields: [scoreboardId], references: [id])
+  scoreboardId Int
 
-  scores        Score[]
+  Scores Score[]
 }
 
 model Score {
   id        Int      @id @unique @default(autoincrement())
   createdAt DateTime @default(now())
 
-  Scorelist   Scorelist? @relation(fields: [scorelistId], references: [id])
-  scorelistId Int?
+  Scorelist   Scorelist @relation(fields: [scorelistId], references: [id])
+  scorelistId Int
 
   Shooter   Shooter @relation(fields: [shooterId], references: [id])
   shooterId Int
