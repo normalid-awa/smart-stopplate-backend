@@ -41,8 +41,10 @@ type Mutation {
 }
 
 type Query {
+  getAllScoreboards: [Scoreboard!]!
   getAllShooters: [Shooter]!
   getAllStages: [Stage!]!
+  getScoreboard(id: Int!): Scoreboard!
   getShooter(id: Int!): Shooter
   getStage(id: Int!): Stage!
 }

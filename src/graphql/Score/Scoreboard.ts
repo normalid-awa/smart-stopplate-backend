@@ -21,6 +21,29 @@ export const Scoreboard = objectType({
     },
 });
 
+export const ScoreboardQuery = extendType({
+    type: "Query",
+    definition(t) {
+        t.nonNull.list.nonNull.field("getAllScoreboards", {
+            type: "Scoreboard",
+            resolve: (src, args, ctx) => {
+                return ctx.prisma.scoreboard.findMany();
+            },
+        });
+        t.nonNull.field("getScoreboard", {
+            type: "Scoreboard",
+            args: {
+                id: nonNull(intArg()),
+            },
+            resolve: (src, args, ctx) => {
+                return ctx.prisma.scoreboard.findUniqueOrThrow({
+                    where: { id: args.id },
+                });
+            },
+        });
+    },
+});
+
 export const ScoreboardMutation = extendType({
     type: "Mutation",
     definition(t) {
