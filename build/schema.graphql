@@ -57,16 +57,17 @@ type Score {
   charlieZone: Int!
   createdAt: DateTime!
   deltaZone: Int!
-  hitFactor: Int!
+  hitFactor: Float!
   id: Int!
   miss: Int!
   noShoots: Int!
   poppers: Int!
   proError: Int!
+  round: Int!
   scoreState: ScoreState!
   scorelist: Scorelist!
   shooter: Shooter!
-  time: Int!
+  time: Float!
   totalScore: Int!
 }
 

@@ -71,9 +71,9 @@ export const Score = objectType({
             },
         });
 
-        t.nonNull.int("time");
+        t.nonNull.float("time");
 
-        t.nonNull.int("hitFactor", {
+        t.nonNull.float("hitFactor", {
             resolve(src, args, ctx, info) {
                 return calc_hf(
                     calc_score(
@@ -89,6 +89,8 @@ export const Score = objectType({
                 );
             },
         });
+
+        t.nonNull.int("round");
 
         t.nonNull.field("scoreState", { type: "ScoreState" });
     },

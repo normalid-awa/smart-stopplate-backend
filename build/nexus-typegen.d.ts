@@ -59,8 +59,9 @@ export interface NexusGenObjects {
     noShoots: number; // Int!
     poppers: number; // Int!
     proError: number; // Int!
+    round: number; // Int!
     scoreState: NexusGenEnums['ScoreState']; // ScoreState!
-    time: number; // Int!
+    time: number; // Float!
   }
   Scoreboard: { // root type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -143,16 +144,17 @@ export interface NexusGenFieldTypes {
     charlieZone: number; // Int!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     deltaZone: number; // Int!
-    hitFactor: number; // Int!
+    hitFactor: number; // Float!
     id: number; // Int!
     miss: number; // Int!
     noShoots: number; // Int!
     poppers: number; // Int!
     proError: number; // Int!
+    round: number; // Int!
     scoreState: NexusGenEnums['ScoreState']; // ScoreState!
     scorelist: NexusGenRootTypes['Scorelist']; // Scorelist!
     shooter: NexusGenRootTypes['Shooter']; // Shooter!
-    time: number; // Int!
+    time: number; // Float!
     totalScore: number; // Int!
   }
   Scoreboard: { // field return type
@@ -238,16 +240,17 @@ export interface NexusGenFieldTypeNames {
     charlieZone: 'Int'
     createdAt: 'DateTime'
     deltaZone: 'Int'
-    hitFactor: 'Int'
+    hitFactor: 'Float'
     id: 'Int'
     miss: 'Int'
     noShoots: 'Int'
     poppers: 'Int'
     proError: 'Int'
+    round: 'Int'
     scoreState: 'ScoreState'
     scorelist: 'Scorelist'
     shooter: 'Shooter'
-    time: 'Int'
+    time: 'Float'
     totalScore: 'Int'
   }
   Scoreboard: { // field return type name
