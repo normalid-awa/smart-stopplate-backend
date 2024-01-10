@@ -130,9 +130,11 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     getAllScoreboards: NexusGenRootTypes['Scoreboard'][]; // [Scoreboard!]!
+    getAllScorelists: NexusGenRootTypes['Scorelist'][]; // [Scorelist!]!
     getAllShooters: Array<NexusGenRootTypes['Shooter'] | null>; // [Shooter]!
     getAllStages: NexusGenRootTypes['Stage'][]; // [Stage!]!
     getScoreboard: NexusGenRootTypes['Scoreboard']; // Scoreboard!
+    getScorelist: NexusGenRootTypes['Scorelist']; // Scorelist!
     getShooter: NexusGenRootTypes['Shooter'] | null; // Shooter
     getStage: NexusGenRootTypes['Stage']; // Stage!
   }
@@ -223,9 +225,11 @@ export interface NexusGenFieldTypeNames {
   }
   Query: { // field return type name
     getAllScoreboards: 'Scoreboard'
+    getAllScorelists: 'Scorelist'
     getAllShooters: 'Shooter'
     getAllStages: 'Stage'
     getScoreboard: 'Scoreboard'
+    getScorelist: 'Scorelist'
     getShooter: 'Shooter'
     getStage: 'Stage'
   }
@@ -391,6 +395,9 @@ export interface NexusGenArgTypes {
   }
   Query: {
     getScoreboard: { // args
+      id: number; // Int!
+    }
+    getScorelist: { // args
       id: number; // Int!
     }
     getShooter: { // args

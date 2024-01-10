@@ -40,6 +40,31 @@ export const Scorelist = objectType({
     },
 });
 
+export const ScorelistQurey = extendType({
+    type: "Query",
+    definition(t) {
+        t.nonNull.list.nonNull.field("getAllScorelists", {
+            type: "Scorelist",
+            resolve: (src, args, ctx, inf) => {
+                return ctx.prisma.scorelist.findMany();
+            },
+        });
+        t.nonNull.field("getScorelist", {
+            type: "Scorelist",
+            args: {
+                id: nonNull(intArg()),
+            },
+            resolve: (src, args, ctx, inf) => {
+                return ctx.prisma.scorelist.findUniqueOrThrow({
+                    where: {
+                        id: args.id,
+                    },
+                });
+            },
+        });
+    },
+});
+
 export const ScorelistMutation = extendType({
     type: "Mutation",
     definition(t) {
