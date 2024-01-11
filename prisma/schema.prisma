@@ -111,7 +111,7 @@ model Score {
 
   hitFactor Float @default(0)
 
-  round Int @default(0)
+  round Int @default(1)
 
   scoreState ScoreState @default(HAVE_NOT_SCORED_YET)
 }

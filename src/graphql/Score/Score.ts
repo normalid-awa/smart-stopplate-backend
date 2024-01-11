@@ -21,6 +21,7 @@ function calc_score(
     return a * 5 + c * 3 + d + pp * 5 - (ns * 10 + m * 10 + pe * 10);
 }
 function calc_hf(score: number, time: number) {
+    if (time == 0) return 0;
     return score / time;
 }
 
@@ -272,7 +273,7 @@ export const ScoreMutation = extendType({
                         totalScore: 0,
                         time: 0,
                         hitFactor: 0,
-                        scoreState: "HAVE_NOT_SCORED_YET"
+                        scoreState: "HAVE_NOT_SCORED_YET",
                     },
                 });
             },
