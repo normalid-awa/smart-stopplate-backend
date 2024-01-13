@@ -91,7 +91,16 @@ export const ScoreboardMutation = extendType({
             args: {
                 id: nonNull(intArg()),
             },
-            resolve: (src, args, ctx, inf) => {
+            resolve: async (src, args, ctx, inf) => {
+                await ctx.prisma.scorelist.updateMany({
+                    where: {
+                        // scoreboardId: { equals: args.id },
+                        Scoreboard: { id: { equals: args.id } },
+                    },
+                    data: {
+                        isLocked: true,
+                    },
+                });
                 return ctx.prisma.scoreboard.update({
                     where: { id: args.id },
                     data: {

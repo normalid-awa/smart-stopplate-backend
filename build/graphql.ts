@@ -194,12 +194,19 @@ export type Query = {
   __typename?: 'Query';
   getAllScoreboards: Array<Scoreboard>;
   getAllScorelists: Array<Scorelist>;
+  getAllScores: Array<Score>;
   getAllShooters: Array<Maybe<Shooter>>;
   getAllStages: Array<Stage>;
+  getScore: Score;
   getScoreboard: Scoreboard;
   getScorelist: Scorelist;
   getShooter?: Maybe<Shooter>;
   getStage: Stage;
+};
+
+
+export type QueryGetScoreArgs = {
+  id: Scalars['Int']['input'];
 };
 
 
@@ -450,8 +457,10 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   getAllScoreboards?: Resolver<Array<ResolversTypes['Scoreboard']>, ParentType, ContextType>;
   getAllScorelists?: Resolver<Array<ResolversTypes['Scorelist']>, ParentType, ContextType>;
+  getAllScores?: Resolver<Array<ResolversTypes['Score']>, ParentType, ContextType>;
   getAllShooters?: Resolver<Array<Maybe<ResolversTypes['Shooter']>>, ParentType, ContextType>;
   getAllStages?: Resolver<Array<ResolversTypes['Stage']>, ParentType, ContextType>;
+  getScore?: Resolver<ResolversTypes['Score'], ParentType, ContextType, RequireFields<QueryGetScoreArgs, 'id'>>;
   getScoreboard?: Resolver<ResolversTypes['Scoreboard'], ParentType, ContextType, RequireFields<QueryGetScoreboardArgs, 'id'>>;
   getScorelist?: Resolver<ResolversTypes['Scorelist'], ParentType, ContextType, RequireFields<QueryGetScorelistArgs, 'id'>>;
   getShooter?: Resolver<Maybe<ResolversTypes['Shooter']>, ParentType, ContextType, RequireFields<QueryGetShooterArgs, 'id'>>;

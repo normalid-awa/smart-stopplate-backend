@@ -97,6 +97,31 @@ export const Score = objectType({
     },
 });
 
+export const ScoreQuery = extendType({
+    type: "Query",
+    definition(t) {
+        t.nonNull.list.nonNull.field("getAllScores", {
+            type: "Score",
+            resolve: (src, args, ctx, info) => {
+                return ctx.prisma.score.findMany();
+            },
+        });
+        t.nonNull.field("getScore", {
+            type: "Score",
+            args: {
+                id: nonNull(intArg())
+            },
+            resolve: (src, args, ctx, info) => {
+                return ctx.prisma.score.findUniqueOrThrow({
+                    where: {
+                        id: args.id
+                    }
+                });
+            },
+        });
+    },
+});
+
 export const ScoreMutation = extendType({
     type: "Mutation",
     definition(t) {
@@ -309,6 +334,7 @@ export const ScoreSubscription = extendType({
                                 "createMany",
                                 "updateMany",
                                 "upsert",
+                                "updateMany"
                             ],
                             () => {
                                 ctx.unsubscribe(sub_id);
