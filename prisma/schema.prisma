@@ -67,10 +67,10 @@ model Scorelist {
   id        Int      @id @unique @default(autoincrement())
   createdAt DateTime @default(now())
 
-  Stage   Stage @relation(fields: [stageId], references: [id])
+  Stage   Stage @relation(fields: [stageId], references: [id], onDelete: Cascade)
   stageId Int
 
-  Scoreboard   Scoreboard @relation(fields: [scoreboardId], references: [id])
+  Scoreboard   Scoreboard @relation(fields: [scoreboardId], references: [id], onDelete: Cascade)
   scoreboardId Int
 
   isLocked Boolean @default(false)
@@ -89,10 +89,10 @@ model Score {
   id        Int      @id @unique @default(autoincrement())
   createdAt DateTime @default(now())
 
-  Scorelist   Scorelist @relation(fields: [scorelistId], references: [id])
+  Scorelist   Scorelist @relation(fields: [scorelistId], references: [id], onDelete: Cascade)
   scorelistId Int
 
-  Shooter   Shooter @relation(fields: [shooterId], references: [id])
+  Shooter   Shooter @relation(fields: [shooterId], references: [id], onDelete: Cascade)
   shooterId Int
 
   alphaZone   Int @default(0)
