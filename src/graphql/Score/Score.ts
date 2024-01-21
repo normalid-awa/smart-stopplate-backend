@@ -106,16 +106,35 @@ export const ScoreQuery = extendType({
                 return ctx.prisma.score.findMany();
             },
         });
+        t.nonNull.list.nonNull.field("getScores", {
+            type: "Score",
+            args: {
+                scorelistId: intArg(),
+                shooterId: intArg(),
+                round: intArg(),
+                scoreState: arg({ type: "ScoreState" }),
+            },
+            resolve: (src, args, ctx, info) => {
+                return ctx.prisma.score.findMany({
+                    where: {
+                        scorelistId: args.scorelistId ?? undefined,
+                        shooterId: args.shooterId ?? undefined,
+                        round: args.round ?? undefined,
+                        scoreState: args.scoreState ?? undefined,
+                    },
+                });
+            },
+        });
         t.nonNull.field("getScore", {
             type: "Score",
             args: {
-                id: nonNull(intArg())
+                id: nonNull(intArg()),
             },
             resolve: (src, args, ctx, info) => {
                 return ctx.prisma.score.findUniqueOrThrow({
                     where: {
-                        id: args.id
-                    }
+                        id: args.id,
+                    },
                 });
             },
         });
@@ -312,6 +331,41 @@ export const ScoreMutation = extendType({
                 return ctx.prisma.score.delete({ where: { id: args.id } });
             },
         });
+        t.field("swapId", {
+            type: "Boolean",
+            args: {
+                id1: nonNull(intArg()),
+                id2: nonNull(intArg()),
+            },
+            resolve: async (src, args, ctx, inf) => {
+                let num = await ctx.prisma.score.count({});
+                await ctx.prisma.score.update({
+                    where: {
+                        id: args.id1,
+                    },
+                    data: {
+                        id: num + 1,
+                    },
+                });
+                await ctx.prisma.score.update({
+                    where: {
+                        id: args.id2,
+                    },
+                    data: {
+                        id: args.id1,
+                    },
+                });
+                await ctx.prisma.score.update({
+                    where: {
+                        id: num + 1,
+                    },
+                    data: {
+                        id: args.id2,
+                    },
+                });
+                return true
+            },
+        });
     },
 });
 
@@ -334,7 +388,7 @@ export const ScoreSubscription = extendType({
                                 "createMany",
                                 "updateMany",
                                 "upsert",
-                                "updateMany"
+                                "updateMany",
                             ],
                             () => {
                                 ctx.unsubscribe(sub_id);

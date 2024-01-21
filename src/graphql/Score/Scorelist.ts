@@ -37,6 +37,7 @@ export const Scorelist = objectType({
             },
         });
         t.nonNull.boolean("isLocked");
+        t.nonNull.int("rounds");
     },
 });
 

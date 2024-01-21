@@ -73,9 +73,11 @@ model Scorelist {
   Scoreboard   Scoreboard @relation(fields: [scoreboardId], references: [id], onDelete: Cascade)
   scoreboardId Int
 
+  rounds Int @default(1)
+
   isLocked Boolean @default(false)
 
-  Scores Score[]
+  Scores     Score[]
 }
 
 enum ScoreState {

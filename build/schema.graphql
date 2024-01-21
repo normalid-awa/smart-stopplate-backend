@@ -34,6 +34,7 @@ type Mutation {
   resetScore(id: Int!): Score!
   setScoreDNF(id: Int!): Score!
   setScoreDQ(id: Int!): Score!
+  swapId(id1: Int!, id2: Int!): Boolean
   updateScore(alphaZone: Int!, charlieZone: Int!, deltaZone: Int!, id: Int!, miss: Int!, noShoots: Int!, poppers: Int!, proError: Int!, time: Float!): Score!
   updateScoreboard(id: Int!, name: String!): Scoreboard!
   updateShooter(division: String!, id: Int!, name: String!): Shooter!
@@ -49,6 +50,7 @@ type Query {
   getScore(id: Int!): Score!
   getScoreboard(id: Int!): Scoreboard!
   getScorelist(id: Int!): Scorelist!
+  getScores(round: Int, scoreState: ScoreState, scorelistId: Int, shooterId: Int): [Score!]!
   getShooter(id: Int!): Shooter
   getStage(id: Int!): Stage!
 }
@@ -95,6 +97,7 @@ type Scorelist {
   createdAt: DateTime!
   id: Int!
   isLocked: Boolean!
+  rounds: Int!
   scoreboard: Scoreboard!
   scores: [Score!]!
   stage: Stage!

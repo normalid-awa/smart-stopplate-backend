@@ -73,6 +73,7 @@ export interface NexusGenObjects {
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: number; // Int!
     isLocked: boolean; // Boolean!
+    rounds: number; // Int!
   }
   Shooter: { // root type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -124,6 +125,7 @@ export interface NexusGenFieldTypes {
     resetScore: NexusGenRootTypes['Score']; // Score!
     setScoreDNF: NexusGenRootTypes['Score']; // Score!
     setScoreDQ: NexusGenRootTypes['Score']; // Score!
+    swapId: boolean | null; // Boolean
     updateScore: NexusGenRootTypes['Score']; // Score!
     updateScoreboard: NexusGenRootTypes['Scoreboard']; // Scoreboard!
     updateShooter: NexusGenRootTypes['Shooter']; // Shooter!
@@ -138,6 +140,7 @@ export interface NexusGenFieldTypes {
     getScore: NexusGenRootTypes['Score']; // Score!
     getScoreboard: NexusGenRootTypes['Scoreboard']; // Scoreboard!
     getScorelist: NexusGenRootTypes['Scorelist']; // Scorelist!
+    getScores: NexusGenRootTypes['Score'][]; // [Score!]!
     getShooter: NexusGenRootTypes['Shooter'] | null; // Shooter
     getStage: NexusGenRootTypes['Stage']; // Stage!
   }
@@ -170,6 +173,7 @@ export interface NexusGenFieldTypes {
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: number; // Int!
     isLocked: boolean; // Boolean!
+    rounds: number; // Int!
     scoreboard: NexusGenRootTypes['Scoreboard']; // Scoreboard!
     scores: NexusGenRootTypes['Score'][]; // [Score!]!
     stage: NexusGenRootTypes['Stage']; // Stage!
@@ -222,6 +226,7 @@ export interface NexusGenFieldTypeNames {
     resetScore: 'Score'
     setScoreDNF: 'Score'
     setScoreDQ: 'Score'
+    swapId: 'Boolean'
     updateScore: 'Score'
     updateScoreboard: 'Scoreboard'
     updateShooter: 'Shooter'
@@ -236,6 +241,7 @@ export interface NexusGenFieldTypeNames {
     getScore: 'Score'
     getScoreboard: 'Scoreboard'
     getScorelist: 'Scorelist'
+    getScores: 'Score'
     getShooter: 'Shooter'
     getStage: 'Stage'
   }
@@ -268,6 +274,7 @@ export interface NexusGenFieldTypeNames {
     createdAt: 'DateTime'
     id: 'Int'
     isLocked: 'Boolean'
+    rounds: 'Int'
     scoreboard: 'Scoreboard'
     scores: 'Score'
     stage: 'Stage'
@@ -370,6 +377,10 @@ export interface NexusGenArgTypes {
     setScoreDQ: { // args
       id: number; // Int!
     }
+    swapId: { // args
+      id1: number; // Int!
+      id2: number; // Int!
+    }
     updateScore: { // args
       alphaZone: number; // Int!
       charlieZone: number; // Int!
@@ -409,6 +420,12 @@ export interface NexusGenArgTypes {
     }
     getScorelist: { // args
       id: number; // Int!
+    }
+    getScores: { // args
+      round?: number | null; // Int
+      scoreState?: NexusGenEnums['ScoreState'] | null; // ScoreState
+      scorelistId?: number | null; // Int
+      shooterId?: number | null; // Int
     }
     getShooter: { // args
       id: number; // Int!
