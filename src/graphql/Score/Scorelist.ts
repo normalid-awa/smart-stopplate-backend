@@ -107,6 +107,22 @@ export const ScorelistMutation = extendType({
                 });
             },
         });
+        t.nonNull.field("addNewRound", {
+            type: "Scorelist",
+            args: {
+                id: nonNull(intArg()),
+            },
+            resolve: (src, args, ctx, inf) => {
+                return ctx.prisma.scorelist.update({
+                    where: { id: args.id },
+                    data: {
+                        rounds: {
+                            increment: 1
+                        }
+                    }
+                });
+            },
+        });
     },
 });
 

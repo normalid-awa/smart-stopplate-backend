@@ -17,8 +17,9 @@ enum Division {
 }
 
 type Mutation {
+  addNewRound(id: Int!): Scorelist!
   assignScore(alphaZone: Int!, charlieZone: Int!, deltaZone: Int!, id: Int!, miss: Int!, noShoots: Int!, poppers: Int!, proError: Int!, time: Float!): Score!
-  createScore(scorelistId: Int!, shooterId: Int!): Score!
+  createScore(round: Int!, scorelistId: Int!, shooterId: Int!): Score!
   createScoreboard(name: String!): Scoreboard!
   createScorelist(scoreboardId: Int!, stageId: Int!): Scorelist!
   createShooter(division: String!, name: String!): Shooter!
@@ -34,7 +35,7 @@ type Mutation {
   resetScore(id: Int!): Score!
   setScoreDNF(id: Int!): Score!
   setScoreDQ(id: Int!): Score!
-  swapId(id1: Int!, id2: Int!): Boolean
+  swapScoreId(id1: Int!, id2: Int!): Boolean
   updateScore(alphaZone: Int!, charlieZone: Int!, deltaZone: Int!, id: Int!, miss: Int!, noShoots: Int!, poppers: Int!, proError: Int!, time: Float!): Score!
   updateScoreboard(id: Int!, name: String!): Scoreboard!
   updateShooter(division: String!, id: Int!, name: String!): Shooter!

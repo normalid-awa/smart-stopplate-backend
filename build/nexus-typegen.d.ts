@@ -108,6 +108,7 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnu
 
 export interface NexusGenFieldTypes {
   Mutation: { // field return type
+    addNewRound: NexusGenRootTypes['Scorelist']; // Scorelist!
     assignScore: NexusGenRootTypes['Score']; // Score!
     createScore: NexusGenRootTypes['Score']; // Score!
     createScoreboard: NexusGenRootTypes['Scoreboard']; // Scoreboard!
@@ -125,7 +126,7 @@ export interface NexusGenFieldTypes {
     resetScore: NexusGenRootTypes['Score']; // Score!
     setScoreDNF: NexusGenRootTypes['Score']; // Score!
     setScoreDQ: NexusGenRootTypes['Score']; // Score!
-    swapId: boolean | null; // Boolean
+    swapScoreId: boolean | null; // Boolean
     updateScore: NexusGenRootTypes['Score']; // Score!
     updateScoreboard: NexusGenRootTypes['Scoreboard']; // Scoreboard!
     updateShooter: NexusGenRootTypes['Shooter']; // Shooter!
@@ -209,6 +210,7 @@ export interface NexusGenFieldTypes {
 
 export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
+    addNewRound: 'Scorelist'
     assignScore: 'Score'
     createScore: 'Score'
     createScoreboard: 'Scoreboard'
@@ -226,7 +228,7 @@ export interface NexusGenFieldTypeNames {
     resetScore: 'Score'
     setScoreDNF: 'Score'
     setScoreDQ: 'Score'
-    swapId: 'Boolean'
+    swapScoreId: 'Boolean'
     updateScore: 'Score'
     updateScoreboard: 'Scoreboard'
     updateShooter: 'Shooter'
@@ -310,6 +312,9 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    addNewRound: { // args
+      id: number; // Int!
+    }
     assignScore: { // args
       alphaZone: number; // Int!
       charlieZone: number; // Int!
@@ -322,6 +327,7 @@ export interface NexusGenArgTypes {
       time: number; // Float!
     }
     createScore: { // args
+      round: number; // Int!
       scorelistId: number; // Int!
       shooterId: number; // Int!
     }
@@ -377,7 +383,7 @@ export interface NexusGenArgTypes {
     setScoreDQ: { // args
       id: number; // Int!
     }
-    swapId: { // args
+    swapScoreId: { // args
       id1: number; // Int!
       id2: number; // Int!
     }

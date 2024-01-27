@@ -149,12 +149,14 @@ export const ScoreMutation = extendType({
             args: {
                 scorelistId: nonNull(intArg()),
                 shooterId: nonNull(intArg()),
+                round: nonNull(intArg()),
             },
             resolve: (src, args, ctx, inf) => {
                 return ctx.prisma.score.create({
                     data: {
                         Scorelist: { connect: { id: args.scorelistId } },
                         Shooter: { connect: { id: args.shooterId } },
+                        round: args.round
                     },
                 });
             },
@@ -331,20 +333,27 @@ export const ScoreMutation = extendType({
                 return ctx.prisma.score.delete({ where: { id: args.id } });
             },
         });
-        t.field("swapId", {
+        t.field("swapScoreId", {
             type: "Boolean",
             args: {
                 id1: nonNull(intArg()),
                 id2: nonNull(intArg()),
             },
             resolve: async (src, args, ctx, inf) => {
-                let num = await ctx.prisma.score.count({});
+                let largest_id = (await ctx.prisma.score.findFirst({
+                    orderBy: {
+                        id: "asc"
+                    }
+                }));
+                if (!largest_id)
+                    return false;
+                let length = largest_id.id;
                 await ctx.prisma.score.update({
                     where: {
                         id: args.id1,
                     },
                     data: {
-                        id: num + 1,
+                        id: length + 1,
                     },
                 });
                 await ctx.prisma.score.update({
@@ -357,7 +366,7 @@ export const ScoreMutation = extendType({
                 });
                 await ctx.prisma.score.update({
                     where: {
-                        id: num + 1,
+                        id: length + 1,
                     },
                     data: {
                         id: args.id2,

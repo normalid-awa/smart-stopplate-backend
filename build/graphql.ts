@@ -29,6 +29,7 @@ export enum Division {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addNewRound: Scorelist;
   assignScore: Score;
   createScore: Score;
   createScoreboard: Scoreboard;
@@ -46,10 +47,16 @@ export type Mutation = {
   resetScore: Score;
   setScoreDNF: Score;
   setScoreDQ: Score;
+  swapScoreId?: Maybe<Scalars['Boolean']['output']>;
   updateScore: Score;
   updateScoreboard: Scoreboard;
   updateShooter: Shooter;
   updateStage: Stage;
+};
+
+
+export type MutationAddNewRoundArgs = {
+  id: Scalars['Int']['input'];
 };
 
 
@@ -67,6 +74,7 @@ export type MutationAssignScoreArgs = {
 
 
 export type MutationCreateScoreArgs = {
+  round: Scalars['Int']['input'];
   scorelistId: Scalars['Int']['input'];
   shooterId: Scalars['Int']['input'];
 };
@@ -154,6 +162,12 @@ export type MutationSetScoreDqArgs = {
 };
 
 
+export type MutationSwapScoreIdArgs = {
+  id1: Scalars['Int']['input'];
+  id2: Scalars['Int']['input'];
+};
+
+
 export type MutationUpdateScoreArgs = {
   alphaZone: Scalars['Int']['input'];
   charlieZone: Scalars['Int']['input'];
@@ -200,6 +214,7 @@ export type Query = {
   getScore: Score;
   getScoreboard: Scoreboard;
   getScorelist: Scorelist;
+  getScores: Array<Score>;
   getShooter?: Maybe<Shooter>;
   getStage: Stage;
 };
@@ -217,6 +232,14 @@ export type QueryGetScoreboardArgs = {
 
 export type QueryGetScorelistArgs = {
   id: Scalars['Int']['input'];
+};
+
+
+export type QueryGetScoresArgs = {
+  round?: InputMaybe<Scalars['Int']['input']>;
+  scoreState?: InputMaybe<ScoreState>;
+  scorelistId?: InputMaybe<Scalars['Int']['input']>;
+  shooterId?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -274,6 +297,7 @@ export type Scorelist = {
   createdAt: Scalars['DateTime']['output'];
   id: Scalars['Int']['output'];
   isLocked: Scalars['Boolean']['output'];
+  rounds: Scalars['Int']['output'];
   scoreboard: Scoreboard;
   scores: Array<Score>;
   stage: Stage;
@@ -431,8 +455,9 @@ export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversT
 }
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  addNewRound?: Resolver<ResolversTypes['Scorelist'], ParentType, ContextType, RequireFields<MutationAddNewRoundArgs, 'id'>>;
   assignScore?: Resolver<ResolversTypes['Score'], ParentType, ContextType, RequireFields<MutationAssignScoreArgs, 'alphaZone' | 'charlieZone' | 'deltaZone' | 'id' | 'miss' | 'noShoots' | 'poppers' | 'proError' | 'time'>>;
-  createScore?: Resolver<ResolversTypes['Score'], ParentType, ContextType, RequireFields<MutationCreateScoreArgs, 'scorelistId' | 'shooterId'>>;
+  createScore?: Resolver<ResolversTypes['Score'], ParentType, ContextType, RequireFields<MutationCreateScoreArgs, 'round' | 'scorelistId' | 'shooterId'>>;
   createScoreboard?: Resolver<ResolversTypes['Scoreboard'], ParentType, ContextType, RequireFields<MutationCreateScoreboardArgs, 'name'>>;
   createScorelist?: Resolver<ResolversTypes['Scorelist'], ParentType, ContextType, RequireFields<MutationCreateScorelistArgs, 'scoreboardId' | 'stageId'>>;
   createShooter?: Resolver<ResolversTypes['Shooter'], ParentType, ContextType, RequireFields<MutationCreateShooterArgs, 'division' | 'name'>>;
@@ -448,6 +473,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   resetScore?: Resolver<ResolversTypes['Score'], ParentType, ContextType, RequireFields<MutationResetScoreArgs, 'id'>>;
   setScoreDNF?: Resolver<ResolversTypes['Score'], ParentType, ContextType, RequireFields<MutationSetScoreDnfArgs, 'id'>>;
   setScoreDQ?: Resolver<ResolversTypes['Score'], ParentType, ContextType, RequireFields<MutationSetScoreDqArgs, 'id'>>;
+  swapScoreId?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationSwapScoreIdArgs, 'id1' | 'id2'>>;
   updateScore?: Resolver<ResolversTypes['Score'], ParentType, ContextType, RequireFields<MutationUpdateScoreArgs, 'alphaZone' | 'charlieZone' | 'deltaZone' | 'id' | 'miss' | 'noShoots' | 'poppers' | 'proError' | 'time'>>;
   updateScoreboard?: Resolver<ResolversTypes['Scoreboard'], ParentType, ContextType, RequireFields<MutationUpdateScoreboardArgs, 'id' | 'name'>>;
   updateShooter?: Resolver<ResolversTypes['Shooter'], ParentType, ContextType, RequireFields<MutationUpdateShooterArgs, 'division' | 'id' | 'name'>>;
@@ -463,6 +489,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getScore?: Resolver<ResolversTypes['Score'], ParentType, ContextType, RequireFields<QueryGetScoreArgs, 'id'>>;
   getScoreboard?: Resolver<ResolversTypes['Scoreboard'], ParentType, ContextType, RequireFields<QueryGetScoreboardArgs, 'id'>>;
   getScorelist?: Resolver<ResolversTypes['Scorelist'], ParentType, ContextType, RequireFields<QueryGetScorelistArgs, 'id'>>;
+  getScores?: Resolver<Array<ResolversTypes['Score']>, ParentType, ContextType, Partial<QueryGetScoresArgs>>;
   getShooter?: Resolver<Maybe<ResolversTypes['Shooter']>, ParentType, ContextType, RequireFields<QueryGetShooterArgs, 'id'>>;
   getStage?: Resolver<ResolversTypes['Stage'], ParentType, ContextType, RequireFields<QueryGetStageArgs, 'id'>>;
 };
@@ -500,6 +527,7 @@ export type ScorelistResolvers<ContextType = any, ParentType extends ResolversPa
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   isLocked?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  rounds?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   scoreboard?: Resolver<ResolversTypes['Scoreboard'], ParentType, ContextType>;
   scores?: Resolver<Array<ResolversTypes['Score']>, ParentType, ContextType>;
   stage?: Resolver<ResolversTypes['Stage'], ParentType, ContextType>;

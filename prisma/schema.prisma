@@ -77,7 +77,7 @@ model Scorelist {
 
   isLocked Boolean @default(false)
 
-  Scores     Score[]
+  Scores Score[]
 }
 
 enum ScoreState {
@@ -116,4 +116,23 @@ model Score {
   round Int @default(1)
 
   scoreState ScoreState @default(HAVE_NOT_SCORED_YET)
+}
+
+model dq_reason {
+  id           Int     @id @unique @default(autoincrement())
+  index        String?
+  big_title    String?
+  big_title_zh String?
+  content      String?
+  content_zh   String?
+}
+
+model pro_error_reason {
+  id                Int     @id @unique @default(autoincrement())
+  index             String?
+  big_title         String?
+  big_title_zh      String?
+  content           String?
+  content_zh        String?
+  single_punishment Boolean @default(true)
 }
