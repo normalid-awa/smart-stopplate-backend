@@ -16,6 +16,18 @@ enum Division {
   STANDARD
 }
 
+"""Dq reason"""
+type Dq {
+  category: String!
+  category_zh: String!
+  content: String!
+  content_zh: String!
+  id: Int!
+
+  "\n                The index that locate in the rulebook\n            "
+  index: String!
+}
+
 type Mutation {
   addNewRound(id: Int!): Scorelist!
   assignScore(alphaZone: Int!, charlieZone: Int!, deltaZone: Int!, id: Int!, miss: Int!, noShoots: Int!, poppers: Int!, proError: Int!, time: Float!): Score!
@@ -34,7 +46,7 @@ type Mutation {
   lockStage(id: Int!): Stage!
   resetScore(id: Int!): Score!
   setScoreDNF(id: Int!): Score!
-  setScoreDQ(id: Int!): Score!
+  setScoreDQ(dq_reason: Int!, id: Int!): Score!
   swapScoreId(id1: Int!, id2: Int!): Boolean
   updateScore(alphaZone: Int!, charlieZone: Int!, deltaZone: Int!, id: Int!, miss: Int!, noShoots: Int!, poppers: Int!, proError: Int!, time: Float!): Score!
   updateScoreboard(id: Int!, name: String!): Scoreboard!
@@ -42,7 +54,19 @@ type Mutation {
   updateStage(condition: Int!, description: String!, id: Int!, name: String!, noShoots: Int!, paperTargets: Int!, popperTargets: Int!): Stage!
 }
 
+type ProError {
+  big_title: String!
+  big_title_zh: String!
+  content: String!
+  content_zh: String!
+  id: Int!
+  index: String! @deprecated(reason: "\n                The index locate in the rulebook\n            ")
+  single_punishment: Boolean!
+}
+
 type Query {
+  getAllDqReason: [Dq!]!
+  getAllProError: [ProError!]!
   getAllScoreboards: [Scoreboard!]!
   getAllScorelists: [Scorelist!]!
   getAllScores: [Score!]!

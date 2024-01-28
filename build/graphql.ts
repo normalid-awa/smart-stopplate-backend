@@ -27,6 +27,22 @@ export enum Division {
   Standard = 'STANDARD'
 }
 
+/** Dq reason */
+export type Dq = {
+  __typename?: 'Dq';
+  category: Scalars['String']['output'];
+  category_zh: Scalars['String']['output'];
+  content: Scalars['String']['output'];
+  content_zh: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  /**
+   *
+   *                 The index that locate in the rulebook
+   *
+   */
+  index: Scalars['String']['output'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addNewRound: Scorelist;
@@ -204,8 +220,26 @@ export type MutationUpdateStageArgs = {
   popperTargets: Scalars['Int']['input'];
 };
 
+export type ProError = {
+  __typename?: 'ProError';
+  big_title: Scalars['String']['output'];
+  big_title_zh: Scalars['String']['output'];
+  content: Scalars['String']['output'];
+  content_zh: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  /**
+   * @deprecated
+   *                 The index locate in the rulebook
+   *
+   */
+  index: Scalars['String']['output'];
+  single_punishment: Scalars['Boolean']['output'];
+};
+
 export type Query = {
   __typename?: 'Query';
+  getAllDqReason: Array<Dq>;
+  getAllProError: Array<ProError>;
   getAllScoreboards: Array<Scoreboard>;
   getAllScorelists: Array<Scorelist>;
   getAllScores: Array<Score>;
@@ -418,9 +452,11 @@ export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']['output']>;
   Division: Division;
+  Dq: ResolverTypeWrapper<Dq>;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
+  ProError: ResolverTypeWrapper<ProError>;
   Query: ResolverTypeWrapper<{}>;
   Score: ResolverTypeWrapper<Score>;
   ScoreState: ScoreState;
@@ -437,9 +473,11 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
   DateTime: Scalars['DateTime']['output'];
+  Dq: Dq;
   Float: Scalars['Float']['output'];
   Int: Scalars['Int']['output'];
   Mutation: {};
+  ProError: ProError;
   Query: {};
   Score: Score;
   Scoreboard: Scoreboard;
@@ -453,6 +491,16 @@ export type ResolversParentTypes = {
 export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
   name: 'DateTime';
 }
+
+export type DqResolvers<ContextType = any, ParentType extends ResolversParentTypes['Dq'] = ResolversParentTypes['Dq']> = {
+  category?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  category_zh?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  content_zh?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  index?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   addNewRound?: Resolver<ResolversTypes['Scorelist'], ParentType, ContextType, RequireFields<MutationAddNewRoundArgs, 'id'>>;
@@ -480,7 +528,20 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   updateStage?: Resolver<ResolversTypes['Stage'], ParentType, ContextType, RequireFields<MutationUpdateStageArgs, 'condition' | 'description' | 'id' | 'name' | 'noShoots' | 'paperTargets' | 'popperTargets'>>;
 };
 
+export type ProErrorResolvers<ContextType = any, ParentType extends ResolversParentTypes['ProError'] = ResolversParentTypes['ProError']> = {
+  big_title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  big_title_zh?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  content_zh?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  index?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  single_punishment?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  getAllDqReason?: Resolver<Array<ResolversTypes['Dq']>, ParentType, ContextType>;
+  getAllProError?: Resolver<Array<ResolversTypes['ProError']>, ParentType, ContextType>;
   getAllScoreboards?: Resolver<Array<ResolversTypes['Scoreboard']>, ParentType, ContextType>;
   getAllScorelists?: Resolver<Array<ResolversTypes['Scorelist']>, ParentType, ContextType>;
   getAllScores?: Resolver<Array<ResolversTypes['Score']>, ParentType, ContextType>;
@@ -568,7 +629,9 @@ export type SubscriptionResolvers<ContextType = any, ParentType extends Resolver
 
 export type Resolvers<ContextType = any> = {
   DateTime?: GraphQLScalarType;
+  Dq?: DqResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
+  ProError?: ProErrorResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Score?: ScoreResolvers<ContextType>;
   Scoreboard?: ScoreboardResolvers<ContextType>;

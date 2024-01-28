@@ -106,7 +106,7 @@ model Score {
   poppers Int @default(0)
 
   proError Int @default(0)
-
+  
   totalScore Int @default(0)
 
   time Float @default(0)
@@ -116,23 +116,28 @@ model Score {
   round Int @default(1)
 
   scoreState ScoreState @default(HAVE_NOT_SCORED_YET)
+
+  dqReason    DqReason? @relation(fields: [dqReasonId], references: [id])
+  dqReasonId  Int?
+
 }
 
-model dq_reason {
-  id           Int     @id @unique @default(autoincrement())
-  index        String?
-  big_title    String?
-  big_title_zh String?
-  content      String?
-  content_zh   String?
+model DqReason {
+  id          Int     @id @unique @default(autoincrement())
+  index       String
+  category    String
+  category_zh String
+  content     String
+  content_zh  String
+  Score       Score[]
 }
 
-model pro_error_reason {
-  id                Int     @id @unique @default(autoincrement())
-  index             String?
-  big_title         String?
-  big_title_zh      String?
-  content           String?
-  content_zh        String?
-  single_punishment Boolean @default(true)
+model ProErrorReason {
+  id                Int         @id @unique @default(autoincrement())
+  index             String
+  big_title         String
+  big_title_zh      String
+  content           String
+  content_zh        String
+  single_punishment Boolean     @default(true) //is this pro error only can assign one time or multiple times
 }

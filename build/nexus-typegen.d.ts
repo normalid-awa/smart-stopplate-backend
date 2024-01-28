@@ -47,7 +47,24 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  Dq: { // root type
+    category: string; // String!
+    category_zh: string; // String!
+    content: string; // String!
+    content_zh: string; // String!
+    id: number; // Int!
+    index: string; // String!
+  }
   Mutation: {};
+  ProError: { // root type
+    big_title: string; // String!
+    big_title_zh: string; // String!
+    content: string; // String!
+    content_zh: string; // String!
+    id: number; // Int!
+    index: string; // String!
+    single_punishment: boolean; // Boolean!
+  }
   Query: {};
   Score: { // root type
     alphaZone: number; // Int!
@@ -107,6 +124,14 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
+  Dq: { // field return type
+    category: string; // String!
+    category_zh: string; // String!
+    content: string; // String!
+    content_zh: string; // String!
+    id: number; // Int!
+    index: string; // String!
+  }
   Mutation: { // field return type
     addNewRound: NexusGenRootTypes['Scorelist']; // Scorelist!
     assignScore: NexusGenRootTypes['Score']; // Score!
@@ -132,7 +157,18 @@ export interface NexusGenFieldTypes {
     updateShooter: NexusGenRootTypes['Shooter']; // Shooter!
     updateStage: NexusGenRootTypes['Stage']; // Stage!
   }
+  ProError: { // field return type
+    big_title: string; // String!
+    big_title_zh: string; // String!
+    content: string; // String!
+    content_zh: string; // String!
+    id: number; // Int!
+    index: string; // String!
+    single_punishment: boolean; // Boolean!
+  }
   Query: { // field return type
+    getAllDqReason: NexusGenRootTypes['Dq'][]; // [Dq!]!
+    getAllProError: NexusGenRootTypes['ProError'][]; // [ProError!]!
     getAllScoreboards: NexusGenRootTypes['Scoreboard'][]; // [Scoreboard!]!
     getAllScorelists: NexusGenRootTypes['Scorelist'][]; // [Scorelist!]!
     getAllScores: NexusGenRootTypes['Score'][]; // [Score!]!
@@ -209,6 +245,14 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenFieldTypeNames {
+  Dq: { // field return type name
+    category: 'String'
+    category_zh: 'String'
+    content: 'String'
+    content_zh: 'String'
+    id: 'Int'
+    index: 'String'
+  }
   Mutation: { // field return type name
     addNewRound: 'Scorelist'
     assignScore: 'Score'
@@ -234,7 +278,18 @@ export interface NexusGenFieldTypeNames {
     updateShooter: 'Shooter'
     updateStage: 'Stage'
   }
+  ProError: { // field return type name
+    big_title: 'String'
+    big_title_zh: 'String'
+    content: 'String'
+    content_zh: 'String'
+    id: 'Int'
+    index: 'String'
+    single_punishment: 'Boolean'
+  }
   Query: { // field return type name
+    getAllDqReason: 'Dq'
+    getAllProError: 'ProError'
     getAllScoreboards: 'Scoreboard'
     getAllScorelists: 'Scorelist'
     getAllScores: 'Score'
@@ -381,6 +436,7 @@ export interface NexusGenArgTypes {
       id: number; // Int!
     }
     setScoreDQ: { // args
+      dq_reason: number; // Int!
       id: number; // Int!
     }
     swapScoreId: { // args

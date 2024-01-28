@@ -288,6 +288,7 @@ export const ScoreMutation = extendType({
             type: "Score",
             args: {
                 id: nonNull(intArg()),
+                dq_reason: nonNull(intArg()),
             },
             resolve: (src, args, ctx, inf) => {
                 return ctx.prisma.score.update({
@@ -296,6 +297,7 @@ export const ScoreMutation = extendType({
                     },
                     data: {
                         scoreState: "DQ",
+                        dqReason: { connect: { id: args.dq_reason } },
                     },
                 });
             },
