@@ -4,6 +4,7 @@ import {
     extendType,
     floatArg,
     intArg,
+    list,
     nonNull,
     objectType,
     stringArg,
@@ -59,7 +60,7 @@ export const Score = objectType({
         t.nonNull.int("proError");
 
         t.nonNull.int("totalScore", {
-            resolve(src) {
+            resolve(src, args, ctx, info) {
                 return calc_score(
                     src.alphaZone,
                     src.charlieZone,
@@ -156,7 +157,7 @@ export const ScoreMutation = extendType({
                     data: {
                         Scorelist: { connect: { id: args.scorelistId } },
                         Shooter: { connect: { id: args.shooterId } },
-                        round: args.round
+                        round: args.round,
                     },
                 });
             },
@@ -342,13 +343,12 @@ export const ScoreMutation = extendType({
                 id2: nonNull(intArg()),
             },
             resolve: async (src, args, ctx, inf) => {
-                let largest_id = (await ctx.prisma.score.findFirst({
+                let largest_id = await ctx.prisma.score.findFirst({
                     orderBy: {
-                        id: "asc"
-                    }
-                }));
-                if (!largest_id)
-                    return false;
+                        id: "asc",
+                    },
+                });
+                if (!largest_id) return false;
                 let length = largest_id.id;
                 await ctx.prisma.score.update({
                     where: {
@@ -374,7 +374,7 @@ export const ScoreMutation = extendType({
                         id: args.id2,
                     },
                 });
-                return true
+                return true;
             },
         });
     },

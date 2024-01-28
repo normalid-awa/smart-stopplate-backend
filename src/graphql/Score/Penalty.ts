@@ -30,8 +30,8 @@ export const DqQuery = extendType({
 })
 
 
-export const ProError = objectType({
-    name: "ProError",
+export const ProErrorItem = objectType({
+    name: "ProErrorItem",
     definition(t) {
         t.nonNull.int("id");
         t.nonNull.string("index", {
@@ -47,13 +47,13 @@ export const ProError = objectType({
     },
 });
 
-export const ProErrorQuery = extendType({
+export const ProErrorItemQuery = extendType({
     type: "Query",
     definition(t) {
         t.nonNull.list.nonNull.field("getAllProError", {
-            type: "ProError",
+            type: "ProErrorItem",
             resolve: (src, args, ctx, info) => {
-                return ctx.prisma.proErrorReason.findMany();
+                return ctx.prisma.proErrorItem.findMany();
             },
         });
     },

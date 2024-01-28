@@ -54,7 +54,7 @@ type Mutation {
   updateStage(condition: Int!, description: String!, id: Int!, name: String!, noShoots: Int!, paperTargets: Int!, popperTargets: Int!): Stage!
 }
 
-type ProError {
+type ProErrorItem {
   big_title: String!
   big_title_zh: String!
   content: String!
@@ -66,7 +66,7 @@ type ProError {
 
 type Query {
   getAllDqReason: [Dq!]!
-  getAllProError: [ProError!]!
+  getAllProError: [ProErrorItem!]!
   getAllScoreboards: [Scoreboard!]!
   getAllScorelists: [Scorelist!]!
   getAllScores: [Score!]!

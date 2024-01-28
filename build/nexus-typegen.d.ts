@@ -56,7 +56,7 @@ export interface NexusGenObjects {
     index: string; // String!
   }
   Mutation: {};
-  ProError: { // root type
+  ProErrorItem: { // root type
     big_title: string; // String!
     big_title_zh: string; // String!
     content: string; // String!
@@ -157,7 +157,7 @@ export interface NexusGenFieldTypes {
     updateShooter: NexusGenRootTypes['Shooter']; // Shooter!
     updateStage: NexusGenRootTypes['Stage']; // Stage!
   }
-  ProError: { // field return type
+  ProErrorItem: { // field return type
     big_title: string; // String!
     big_title_zh: string; // String!
     content: string; // String!
@@ -168,7 +168,7 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     getAllDqReason: NexusGenRootTypes['Dq'][]; // [Dq!]!
-    getAllProError: NexusGenRootTypes['ProError'][]; // [ProError!]!
+    getAllProError: NexusGenRootTypes['ProErrorItem'][]; // [ProErrorItem!]!
     getAllScoreboards: NexusGenRootTypes['Scoreboard'][]; // [Scoreboard!]!
     getAllScorelists: NexusGenRootTypes['Scorelist'][]; // [Scorelist!]!
     getAllScores: NexusGenRootTypes['Score'][]; // [Score!]!
@@ -278,7 +278,7 @@ export interface NexusGenFieldTypeNames {
     updateShooter: 'Shooter'
     updateStage: 'Stage'
   }
-  ProError: { // field return type name
+  ProErrorItem: { // field return type name
     big_title: 'String'
     big_title_zh: 'String'
     content: 'String'
@@ -289,7 +289,7 @@ export interface NexusGenFieldTypeNames {
   }
   Query: { // field return type name
     getAllDqReason: 'Dq'
-    getAllProError: 'ProError'
+    getAllProError: 'ProErrorItem'
     getAllScoreboards: 'Scoreboard'
     getAllScorelists: 'Scorelist'
     getAllScores: 'Score'
