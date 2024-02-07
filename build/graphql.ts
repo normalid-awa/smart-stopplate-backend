@@ -237,14 +237,6 @@ export type ProErrorItem = {
   single_punishment: Scalars['Boolean']['output'];
 };
 
-export type ProErrorRecord = {
-  __typename?: 'ProErrorRecord';
-  Score: Score;
-  count: Scalars['Int']['output'];
-  id: Scalars['Int']['output'];
-  proError: ProErrorItem;
-};
-
 export type Query = {
   __typename?: 'Query';
   getAllDqReason: Array<Dq>;
@@ -307,8 +299,7 @@ export type Score = {
   miss: Scalars['Int']['output'];
   noShoots: Scalars['Int']['output'];
   poppers: Scalars['Int']['output'];
-  proError: Array<ProErrorRecord>;
-  proErrorCounts?: Maybe<Scalars['Int']['output']>;
+  proError: Scalars['Int']['output'];
   round: Scalars['Int']['output'];
   scoreState: ScoreState;
   scorelist: Scorelist;
@@ -467,7 +458,6 @@ export type ResolversTypes = {
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
   ProErrorItem: ResolverTypeWrapper<ProErrorItem>;
-  ProErrorRecord: ResolverTypeWrapper<ProErrorRecord>;
   Query: ResolverTypeWrapper<{}>;
   Score: ResolverTypeWrapper<Score>;
   ScoreState: ScoreState;
@@ -489,7 +479,6 @@ export type ResolversParentTypes = {
   Int: Scalars['Int']['output'];
   Mutation: {};
   ProErrorItem: ProErrorItem;
-  ProErrorRecord: ProErrorRecord;
   Query: {};
   Score: Score;
   Scoreboard: Scoreboard;
@@ -551,14 +540,6 @@ export type ProErrorItemResolvers<ContextType = any, ParentType extends Resolver
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ProErrorRecordResolvers<ContextType = any, ParentType extends ResolversParentTypes['ProErrorRecord'] = ResolversParentTypes['ProErrorRecord']> = {
-  Score?: Resolver<ResolversTypes['Score'], ParentType, ContextType>;
-  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  proError?: Resolver<ResolversTypes['ProErrorItem'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   getAllDqReason?: Resolver<Array<ResolversTypes['Dq']>, ParentType, ContextType>;
   getAllProError?: Resolver<Array<ResolversTypes['ProErrorItem']>, ParentType, ContextType>;
@@ -585,8 +566,7 @@ export type ScoreResolvers<ContextType = any, ParentType extends ResolversParent
   miss?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   noShoots?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   poppers?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  proError?: Resolver<Array<ResolversTypes['ProErrorRecord']>, ParentType, ContextType>;
-  proErrorCounts?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  proError?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   round?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   scoreState?: Resolver<ResolversTypes['ScoreState'], ParentType, ContextType>;
   scorelist?: Resolver<ResolversTypes['Scorelist'], ParentType, ContextType>;
@@ -653,7 +633,6 @@ export type Resolvers<ContextType = any> = {
   Dq?: DqResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   ProErrorItem?: ProErrorItemResolvers<ContextType>;
-  ProErrorRecord?: ProErrorRecordResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Score?: ScoreResolvers<ContextType>;
   Scoreboard?: ScoreboardResolvers<ContextType>;

@@ -65,6 +65,12 @@ export interface NexusGenObjects {
     index: string; // String!
     single_punishment: boolean; // Boolean!
   }
+  ProErrorRecord: { // root type
+    count: number; // Int!
+    id: number; // Int!
+    proErrorId: number; // Int!
+    scoreId: number; // Int!
+  }
   Query: {};
   Score: { // root type
     alphaZone: number; // Int!
@@ -134,7 +140,6 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     addNewRound: NexusGenRootTypes['Scorelist']; // Scorelist!
-    assignScore: NexusGenRootTypes['Score']; // Score!
     createScore: NexusGenRootTypes['Score']; // Score!
     createScoreboard: NexusGenRootTypes['Scoreboard']; // Scoreboard!
     createScorelist: NexusGenRootTypes['Scorelist']; // Scorelist!
@@ -166,6 +171,14 @@ export interface NexusGenFieldTypes {
     index: string; // String!
     single_punishment: boolean; // Boolean!
   }
+  ProErrorRecord: { // field return type
+    count: number; // Int!
+    id: number; // Int!
+    proError: NexusGenRootTypes['ProErrorItem']; // ProErrorItem!
+    proErrorId: number; // Int!
+    score: NexusGenRootTypes['Score']; // Score!
+    scoreId: number; // Int!
+  }
   Query: { // field return type
     getAllDqReason: NexusGenRootTypes['Dq'][]; // [Dq!]!
     getAllProError: NexusGenRootTypes['ProErrorItem'][]; // [ProErrorItem!]!
@@ -192,6 +205,7 @@ export interface NexusGenFieldTypes {
     noShoots: number; // Int!
     poppers: number; // Int!
     proError: number; // Int!
+    proErrorRecord: Array<NexusGenRootTypes['ProErrorRecord'] | null> | null; // [ProErrorRecord]
     round: number; // Int!
     scoreState: NexusGenEnums['ScoreState']; // ScoreState!
     scorelist: NexusGenRootTypes['Scorelist']; // Scorelist!
@@ -255,7 +269,6 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     addNewRound: 'Scorelist'
-    assignScore: 'Score'
     createScore: 'Score'
     createScoreboard: 'Scoreboard'
     createScorelist: 'Scorelist'
@@ -287,6 +300,14 @@ export interface NexusGenFieldTypeNames {
     index: 'String'
     single_punishment: 'Boolean'
   }
+  ProErrorRecord: { // field return type name
+    count: 'Int'
+    id: 'Int'
+    proError: 'ProErrorItem'
+    proErrorId: 'Int'
+    score: 'Score'
+    scoreId: 'Int'
+  }
   Query: { // field return type name
     getAllDqReason: 'Dq'
     getAllProError: 'ProErrorItem'
@@ -313,6 +334,7 @@ export interface NexusGenFieldTypeNames {
     noShoots: 'Int'
     poppers: 'Int'
     proError: 'Int'
+    proErrorRecord: 'ProErrorRecord'
     round: 'Int'
     scoreState: 'ScoreState'
     scorelist: 'Scorelist'
@@ -369,17 +391,6 @@ export interface NexusGenArgTypes {
   Mutation: {
     addNewRound: { // args
       id: number; // Int!
-    }
-    assignScore: { // args
-      alphaZone: number; // Int!
-      charlieZone: number; // Int!
-      deltaZone: number; // Int!
-      id: number; // Int!
-      miss: number; // Int!
-      noShoots: number; // Int!
-      poppers: number; // Int!
-      proError: number; // Int!
-      time: number; // Float!
     }
     createScore: { // args
       round: number; // Int!

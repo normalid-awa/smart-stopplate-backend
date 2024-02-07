@@ -105,7 +105,8 @@ model Score {
 
   poppers Int @default(0)
 
-  proError Int @default(0)
+  proError       Int        @default(0)
+  proErrorRecord ProError[]
 
   totalScore Int @default(0)
 
@@ -121,6 +122,16 @@ model Score {
   dqReasonId Int?
 }
 
+model ProError {
+  score          Score        @relation(fields: [scoreId], references: [id])
+  scoreId Int // relation scalar field (used in the `@relation` attribute above)
+  proError       ProErrorItem @relation(fields: [proErrorId], references: [id])
+  proErrorId     Int // relation scalar field (used in the `@relation` attribute above)
+  count          Int
+
+  @@id([scoreId, proErrorId])
+}
+
 model DqReason {
   id          Int     @id @unique @default(autoincrement())
   index       String
@@ -132,11 +143,12 @@ model DqReason {
 }
 
 model ProErrorItem {
-  id                Int     @id @unique @default(autoincrement())
+  id                Int        @id @unique @default(autoincrement())
   index             String
   big_title         String
   big_title_zh      String
   content           String
   content_zh        String
-  single_punishment Boolean @default(true) //is this pro error only can assign one time or multiple times
+  single_punishment Boolean    @default(true) //is this pro error only can assign one time or multiple times
+  proErrorRecord    ProError[]
 }

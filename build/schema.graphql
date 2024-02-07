@@ -30,7 +30,6 @@ type Dq {
 
 type Mutation {
   addNewRound(id: Int!): Scorelist!
-  assignScore(alphaZone: Int!, charlieZone: Int!, deltaZone: Int!, id: Int!, miss: Int!, noShoots: Int!, poppers: Int!, proError: Int!, time: Float!): Score!
   createScore(round: Int!, scorelistId: Int!, shooterId: Int!): Score!
   createScoreboard(name: String!): Scoreboard!
   createScorelist(scoreboardId: Int!, stageId: Int!): Scorelist!
@@ -64,6 +63,15 @@ type ProErrorItem {
   single_punishment: Boolean!
 }
 
+type ProErrorRecord {
+  count: Int!
+  id: Int!
+  proError: ProErrorItem!
+  proErrorId: Int!
+  score: Score!
+  scoreId: Int!
+}
+
 type Query {
   getAllDqReason: [Dq!]!
   getAllProError: [ProErrorItem!]!
@@ -92,6 +100,7 @@ type Score {
   noShoots: Int!
   poppers: Int!
   proError: Int!
+  proErrorRecord: [ProErrorRecord]
   round: Int!
   scoreState: ScoreState!
   scorelist: Scorelist!

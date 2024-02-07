@@ -8,8 +8,8 @@ export const Dq = objectType({
         t.nonNull.string("index", {
             description: `
                 The index that locate in the rulebook
-            `
-        })
+            `,
+        });
         t.nonNull.string("category");
         t.nonNull.string("category_zh");
         t.nonNull.string("content");
@@ -27,8 +27,7 @@ export const DqQuery = extendType({
             },
         });
     },
-})
-
+});
 
 export const ProErrorItem = objectType({
     name: "ProErrorItem",
@@ -54,6 +53,36 @@ export const ProErrorItemQuery = extendType({
             type: "ProErrorItem",
             resolve: (src, args, ctx, info) => {
                 return ctx.prisma.proErrorItem.findMany();
+            },
+        });
+    },
+});
+
+export const ProErrorRecord = objectType({
+    name: "ProErrorRecord",
+    definition(t) {
+        t.nonNull.int("id");
+        t.nonNull.int("count");
+        t.nonNull.int("proErrorId");
+        t.nonNull.field("proError", {
+            type: "ProErrorItem",
+            resolve: (src, args, ctx, info) => {
+                return ctx.prisma.proErrorItem.findUniqueOrThrow({
+                    where: {
+                        id: src.proErrorId,
+                    },
+                });
+            },
+        });
+        t.nonNull.int("scoreId");
+        t.nonNull.field("score", {
+            type: "Score",
+            resolve: (src, args, ctx, info) => {
+                return ctx.prisma.score.findUniqueOrThrow({
+                    where: {
+                        id: src.scoreId,
+                    },
+                });
             },
         });
     },

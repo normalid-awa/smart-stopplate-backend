@@ -1,5 +1,6 @@
 import { GraphQLError } from "graphql";
 import {
+    FieldResolver,
     arg,
     extendType,
     floatArg,
@@ -9,6 +10,7 @@ import {
     objectType,
     stringArg,
 } from "nexus";
+import { MaybePromise, OutputScalarConfig } from "nexus/dist/core";
 
 function calc_score(
     a: number,
@@ -58,6 +60,29 @@ export const Score = objectType({
         t.nonNull.int("poppers");
 
         t.nonNull.int("proError");
+
+        t.list.field("proErrorRecord", {
+            type: "ProErrorRecord",
+            resolve(src, args, ctx, info) {
+                return ctx.prisma.proError.findMany({
+                    where: {
+                        scoreId: src.id,
+                    },
+                    include: {
+                        proError: true,
+                        score: true,
+                    },
+                }) as unknown as MaybePromise<
+                    | ({
+                          count: number;
+                          id: number;
+                          proErrorId: number;
+                          scoreId: number;
+                      } | null)[]
+                    | null
+                >;
+            },
+        });
 
         t.nonNull.int("totalScore", {
             resolve(src, args, ctx, info) {
@@ -162,60 +187,6 @@ export const ScoreMutation = extendType({
                 });
             },
         });
-        t.nonNull.field("assignScore", {
-            type: "Score",
-            args: {
-                id: nonNull(intArg()),
-
-                alphaZone: nonNull(intArg()),
-                charlieZone: nonNull(intArg()),
-                deltaZone: nonNull(intArg()),
-                noShoots: nonNull(intArg()),
-                miss: nonNull(intArg()),
-
-                poppers: nonNull(intArg()),
-                proError: nonNull(intArg()),
-                time: nonNull(floatArg()),
-            },
-            resolve: async (src, args, ctx, inf) => {
-                let score_record = await ctx.prisma.score.findUniqueOrThrow({
-                    where: {
-                        id: args.id,
-                    },
-                });
-                if (score_record.scoreState !== "HAVE_NOT_SCORED_YET") {
-                    throw new GraphQLError("The score have been assigned");
-                }
-
-                let score = calc_score(
-                    args.alphaZone,
-                    args.charlieZone,
-                    args.deltaZone,
-                    args.miss,
-                    args.poppers,
-                    args.noShoots,
-                    args.proError
-                );
-                return ctx.prisma.score.update({
-                    where: {
-                        id: args.id,
-                    },
-                    data: {
-                        alphaZone: args.alphaZone,
-                        charlieZone: args.charlieZone,
-                        deltaZone: args.deltaZone,
-                        noShoots: args.noShoots,
-                        miss: args.miss,
-                        poppers: args.poppers,
-                        proError: args.proError,
-                        totalScore: score,
-                        time: args.time,
-                        hitFactor: calc_hf(score, args.time),
-                        scoreState: "SCORED",
-                    },
-                });
-            },
-        });
         t.nonNull.field("updateScore", {
             type: "Score",
             args: {
@@ -237,9 +208,6 @@ export const ScoreMutation = extendType({
                         id: args.id,
                     },
                 });
-                if (score_record.scoreState !== "SCORED") {
-                    throw new GraphQLError("The score haven't assigned yet");
-                }
 
                 let score = calc_score(
                     args.alphaZone,
@@ -259,12 +227,13 @@ export const ScoreMutation = extendType({
                         charlieZone: args.charlieZone,
                         deltaZone: args.deltaZone,
                         noShoots: args.noShoots,
-                        miss: args.miss,
                         poppers: args.poppers,
+                        miss: args.miss,
                         proError: args.proError,
                         totalScore: score,
                         time: args.time,
                         hitFactor: calc_hf(score, args.time),
+                        scoreState: "SCORED"
                     },
                 });
             },
