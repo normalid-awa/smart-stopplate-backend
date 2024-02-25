@@ -82,7 +82,7 @@ export const Score = objectType({
                     | ({
                           count: number;
                           id: number;
-                          proErrorId: number;
+                          proErrorItemId: number;
                           scoreId: number;
                       } | null)[]
                     | null
