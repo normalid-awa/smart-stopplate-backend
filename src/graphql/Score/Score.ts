@@ -1,4 +1,5 @@
 import { GraphQLError } from "graphql";
+import { defineArguments } from "graphql/type/definition";
 import {
     FieldResolver,
     arg,
@@ -10,7 +11,12 @@ import {
     objectType,
     stringArg,
 } from "nexus";
-import { MaybePromise, OutputScalarConfig } from "nexus/dist/core";
+import {
+    MaybePromise,
+    OutputScalarConfig,
+    extendInputType,
+    unionType,
+} from "nexus/dist/core";
 
 function calc_score(
     a: number,
@@ -69,7 +75,7 @@ export const Score = objectType({
                         scoreId: src.id,
                     },
                     include: {
-                        proError: true,
+                        proErrorItem: true,
                         score: true,
                     },
                 }) as unknown as MaybePromise<
@@ -166,7 +172,13 @@ export const ScoreQuery = extendType({
         });
     },
 });
-
+export const ProErrorListItemType = extendInputType({
+    type: "ProErrorListItem",
+    definition(t) {
+        t.nonNull.int("pro_id");
+        t.nonNull.int("count");
+    },
+});
 export const ScoreMutation = extendType({
     type: "Mutation",
     definition(t) {
@@ -200,15 +212,21 @@ export const ScoreMutation = extendType({
 
                 poppers: nonNull(intArg()),
                 proError: nonNull(intArg()),
+                proList: nonNull(
+                    list(
+                        arg({
+                            type: "ProErrorListItem",
+                            description: `
+                        e.g. 1 cross fault line p.e. and 2 fail to reload p.e. just send
+                        [<cross_fault_line_peid>,<fail_to_reload_peid>,<fail_to_reload_peid>]
+                        by putting the ammount of id to represent how many time did the pro error apply
+                    `,
+                        })
+                    )
+                ),
                 time: nonNull(floatArg()),
             },
             resolve: async (src, args, ctx, inf) => {
-                let score_record = await ctx.prisma.score.findUniqueOrThrow({
-                    where: {
-                        id: args.id,
-                    },
-                });
-
                 let score = calc_score(
                     args.alphaZone,
                     args.charlieZone,
@@ -218,7 +236,7 @@ export const ScoreMutation = extendType({
                     args.noShoots,
                     args.proError
                 );
-                return ctx.prisma.score.update({
+                let result = await ctx.prisma.score.update({
                     where: {
                         id: args.id,
                     },
@@ -233,9 +251,30 @@ export const ScoreMutation = extendType({
                         totalScore: score,
                         time: args.time,
                         hitFactor: calc_hf(score, args.time),
-                        scoreState: "SCORED"
+                        scoreState: "SCORED",
                     },
                 });
+                args.proList?.map(async (v) => {
+                    if (!v) return;
+                    console.log(v);
+                    await ctx.prisma.proError.create({
+                        data: {
+                            proErrorItem: {
+                                connect: {
+                                    id: v.pro_id,
+                                },
+                            },
+                            score: {
+                                connect: {
+                                    id: result.id,
+                                },
+                            },
+                            count: v.count,
+                        },
+                    });
+                });
+
+                return result;
             },
         });
         t.nonNull.field("setScoreDNF", {

@@ -29,6 +29,10 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  ProErrorListItem: { // input type
+    count: number; // Int!
+    pro_id: number; // Int!
+  }
 }
 
 export interface NexusGenEnums {
@@ -68,7 +72,7 @@ export interface NexusGenObjects {
   ProErrorRecord: { // root type
     count: number; // Int!
     id: number; // Int!
-    proErrorId: number; // Int!
+    proErrorItemId: number; // Int!
     scoreId: number; // Int!
   }
   Query: {};
@@ -174,8 +178,8 @@ export interface NexusGenFieldTypes {
   ProErrorRecord: { // field return type
     count: number; // Int!
     id: number; // Int!
-    proError: NexusGenRootTypes['ProErrorItem']; // ProErrorItem!
-    proErrorId: number; // Int!
+    proErrorItem: NexusGenRootTypes['ProErrorItem']; // ProErrorItem!
+    proErrorItemId: number; // Int!
     score: NexusGenRootTypes['Score']; // Score!
     scoreId: number; // Int!
   }
@@ -303,8 +307,8 @@ export interface NexusGenFieldTypeNames {
   ProErrorRecord: { // field return type name
     count: 'Int'
     id: 'Int'
-    proError: 'ProErrorItem'
-    proErrorId: 'Int'
+    proErrorItem: 'ProErrorItem'
+    proErrorItemId: 'Int'
     score: 'Score'
     scoreId: 'Int'
   }
@@ -463,6 +467,7 @@ export interface NexusGenArgTypes {
       noShoots: number; // Int!
       poppers: number; // Int!
       proError: number; // Int!
+      proList: Array<NexusGenInputs['ProErrorListItem'] | null>; // [ProErrorListItem]!
       time: number; // Float!
     }
     updateScoreboard: { // args
@@ -517,7 +522,7 @@ export interface NexusGenTypeInterfaces {
 
 export type NexusGenObjectNames = keyof NexusGenObjects;
 
-export type NexusGenInputNames = never;
+export type NexusGenInputNames = keyof NexusGenInputs;
 
 export type NexusGenEnumNames = keyof NexusGenEnums;
 

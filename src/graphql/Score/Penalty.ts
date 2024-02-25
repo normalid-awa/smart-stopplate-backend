@@ -63,13 +63,13 @@ export const ProErrorRecord = objectType({
     definition(t) {
         t.nonNull.int("id");
         t.nonNull.int("count");
-        t.nonNull.int("proErrorId");
-        t.nonNull.field("proError", {
+        t.nonNull.int("proErrorItemId");
+        t.nonNull.field("proErrorItem", {
             type: "ProErrorItem",
             resolve: (src, args, ctx, info) => {
                 return ctx.prisma.proErrorItem.findUniqueOrThrow({
                     where: {
-                        id: src.proErrorId,
+                        id: src.proErrorItemId,
                     },
                 });
             },

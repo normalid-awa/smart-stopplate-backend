@@ -47,7 +47,20 @@ type Mutation {
   setScoreDNF(id: Int!): Score!
   setScoreDQ(dq_reason: Int!, id: Int!): Score!
   swapScoreId(id1: Int!, id2: Int!): Boolean
-  updateScore(alphaZone: Int!, charlieZone: Int!, deltaZone: Int!, id: Int!, miss: Int!, noShoots: Int!, poppers: Int!, proError: Int!, time: Float!): Score!
+  updateScore(
+    alphaZone: Int!
+    charlieZone: Int!
+    deltaZone: Int!
+    id: Int!
+    miss: Int!
+    noShoots: Int!
+    poppers: Int!
+    proError: Int!
+
+    "\n                        e.g. 1 cross fault line p.e. and 2 fail to reload p.e. just send\n                        [<cross_fault_line_peid>,<fail_to_reload_peid>,<fail_to_reload_peid>]\n                        by putting the ammount of id to represent how many time did the pro error apply\n                    "
+    proList: [ProErrorListItem]!
+    time: Float!
+  ): Score!
   updateScoreboard(id: Int!, name: String!): Scoreboard!
   updateShooter(division: String!, id: Int!, name: String!): Shooter!
   updateStage(condition: Int!, description: String!, id: Int!, name: String!, noShoots: Int!, paperTargets: Int!, popperTargets: Int!): Stage!
@@ -63,11 +76,16 @@ type ProErrorItem {
   single_punishment: Boolean!
 }
 
+input ProErrorListItem {
+  count: Int!
+  pro_id: Int!
+}
+
 type ProErrorRecord {
   count: Int!
   id: Int!
-  proError: ProErrorItem!
-  proErrorId: Int!
+  proErrorItem: ProErrorItem!
+  proErrorItemId: Int!
   score: Score!
   scoreId: Int!
 }
