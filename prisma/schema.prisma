@@ -122,12 +122,14 @@ model Score {
 }
 
 model ProError {
-  id             Int          @id @unique @default(autoincrement())
+  id             Int          @unique @default(autoincrement())
   score          Score        @relation(fields: [scoreId], references: [id])
   scoreId        Int // relation scalar field (used in the `@relation` attribute above)
   proErrorItem   ProErrorItem @relation(fields: [proErrorItemId], references: [id])
   proErrorItemId Int // relation scalar field (used in the `@relation` attribute above)
   count          Int
+
+  @@id([scoreId,proErrorItemId])
 }
 
 model DqReason {

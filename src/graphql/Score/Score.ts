@@ -299,16 +299,7 @@ export const ScoreMutation = extendType({
                 args.proList?.map(async (v) => {
                     if (!v) return;
                     console.log(v);
-                    let id = await ctx.prisma.proError.findFirstOrThrow({
-                        where: {
-                            proErrorItem: {
-                                id: v.pro_id,
-                            },
-                            score: {
-                                id: result.id,
-                            },
-                        },
-                    });
+
                     await ctx.prisma.proError.upsert({
                         create: {
                             proErrorItem: {
@@ -337,7 +328,10 @@ export const ScoreMutation = extendType({
                             count: v.count,
                         },
                         where: {
-                            id: id.id,
+                            scoreId_proErrorItemId: {
+                                proErrorItemId: v.pro_id,
+                                scoreId: result.id,
+                            }
                         },
                     });
                 });
