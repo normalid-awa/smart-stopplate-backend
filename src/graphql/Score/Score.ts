@@ -74,7 +74,7 @@ export const Score = objectType({
                     select: {
                         count: true,
                         id: true,
-                    }
+                    },
                 });
                 let result = 0;
                 pro.forEach((v) => {
@@ -299,8 +299,18 @@ export const ScoreMutation = extendType({
                 args.proList?.map(async (v) => {
                     if (!v) return;
                     console.log(v);
-                    await ctx.prisma.proError.create({
-                        data: {
+                    let id = await ctx.prisma.proError.findFirstOrThrow({
+                        where: {
+                            proErrorItem: {
+                                id: v.pro_id,
+                            },
+                            score: {
+                                id: result.id,
+                            },
+                        },
+                    });
+                    await ctx.prisma.proError.upsert({
+                        create: {
                             proErrorItem: {
                                 connect: {
                                     id: v.pro_id,
@@ -312,6 +322,22 @@ export const ScoreMutation = extendType({
                                 },
                             },
                             count: v.count,
+                        },
+                        update: {
+                            proErrorItem: {
+                                connect: {
+                                    id: v.pro_id,
+                                },
+                            },
+                            score: {
+                                connect: {
+                                    id: result.id,
+                                },
+                            },
+                            count: v.count,
+                        },
+                        where: {
+                            id: id.id,
                         },
                     });
                 });
