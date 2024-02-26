@@ -6,16 +6,14 @@ const prisma = new PrismaClient();
 
 // 3
 async function main() {
-    const newLink = await prisma.link.create({
+    let resuklt = await prisma.proError.create({
         data: {
-            description: "Fullstack tutorial for GraphQL",
-            url: "www.howtographql.com",
+            proErrorItemId: 1,
+            scoreId: 83,
+            count: 1,
         },
     });
-    console.log(newLink);
-    console.log(await prisma.link.count());
-    const allLinks = await prisma.link.findMany();
-    console.log(allLinks);
+    console.log(resuklt)
 }
 
 // 4

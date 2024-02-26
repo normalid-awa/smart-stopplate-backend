@@ -14,3 +14,9 @@ export const StageType = enumType({
     members: ["LONG", "SHORT", "MEDIUM", "OTHER"],
     description: "Stage type",
 });
+
+export const ScoreState = enumType({
+    name: "ScoreState",
+    members: ["DQ", "DNF", "HAVE_NOT_SCORED_YET", "SCORED"],
+    description: "Score state",
+});

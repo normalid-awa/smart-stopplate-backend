@@ -16,21 +16,143 @@ enum Division {
   STANDARD
 }
 
+"""Dq reason"""
+type Dq {
+  category: String!
+  category_zh: String!
+  content: String!
+  content_zh: String!
+  id: Int!
+
+  "\n                The index that locate in the rulebook\n            "
+  index: String!
+}
+
 type Mutation {
+  addNewRound(id: Int!): Scorelist!
+  createScore(round: Int!, scorelistId: Int!, shooterId: Int!): Score!
+  createScoreboard(name: String!): Scoreboard!
+  createScorelist(scoreboardId: Int!, stageId: Int!): Scorelist!
   createShooter(division: String!, name: String!): Shooter!
   createStage(condition: Int!, description: String!, name: String!, noShoots: Int!, paperTargets: Int!, popperTargets: Int!): Stage!
+  deleteScore(id: Int!): Score!
+  deleteScoreboard(id: Int!): Scoreboard!
+  deleteScorelist(id: Int!): Scorelist!
   deleteShooter(id: Int!): Shooter!
   deleteStage(id: Int!): Stage!
+  lockScoreboard(id: Int!): Scoreboard!
+  lockScorelist(id: Int!): Scorelist!
   lockStage(id: Int!): Stage!
+  resetScore(id: Int!): Score!
+  setScoreDNF(id: Int!): Score!
+  setScoreDQ(dq_reason: Int!, id: Int!): Score!
+  swapScoreId(id1: Int!, id2: Int!): Boolean
+  updateScore(
+    alphaZone: Int!
+    charlieZone: Int!
+    deltaZone: Int!
+    id: Int!
+    miss: Int!
+    noShoots: Int!
+    poppers: Int!
+    proError: Int!
+
+    "\n                        e.g. 1 cross fault line p.e. and 2 fail to reload p.e. just send\n                        [<cross_fault_line_peid>,<fail_to_reload_peid>,<fail_to_reload_peid>]\n                        by putting the ammount of id to represent how many time did the pro error apply\n                    "
+    proList: [ProErrorListItem]!
+    time: Float!
+  ): Score!
+  updateScoreboard(id: Int!, name: String!): Scoreboard!
   updateShooter(division: String!, id: Int!, name: String!): Shooter!
   updateStage(condition: Int!, description: String!, id: Int!, name: String!, noShoots: Int!, paperTargets: Int!, popperTargets: Int!): Stage!
 }
 
+type ProErrorItem {
+  big_title: String!
+  big_title_zh: String!
+  content: String!
+  content_zh: String!
+  id: Int!
+  index: String! @deprecated(reason: "\n                The index locate in the rulebook\n            ")
+  single_punishment: Boolean!
+}
+
+input ProErrorListItem {
+  count: Int!
+  pro_id: Int!
+}
+
+type ProErrorRecord {
+  count: Int!
+  id: Int!
+  proErrorItem: ProErrorItem!
+  proErrorItemId: Int!
+  score: Score!
+  scoreId: Int!
+}
+
 type Query {
+  getAllDqReason: [Dq!]!
+  getAllProError: [ProErrorItem!]!
+  getAllScoreboards: [Scoreboard!]!
+  getAllScorelists: [Scorelist!]!
+  getAllScores: [Score!]!
   getAllShooters: [Shooter]!
   getAllStages: [Stage!]!
+  getScore(id: Int!): Score!
+  getScoreboard(id: Int!): Scoreboard!
+  getScorelist(id: Int!): Scorelist!
+  getScores(round: Int, scoreState: ScoreState, scorelistId: Int, shooterId: Int): [Score!]!
   getShooter(id: Int!): Shooter
   getStage(id: Int!): Stage!
+}
+
+"""The single record in Scorelist"""
+type Score {
+  alphaZone: Int!
+  charlieZone: Int!
+  createdAt: DateTime!
+  deltaZone: Int!
+  hitFactor: Float!
+  id: Int!
+  miss: Int!
+  noShoots: Int!
+  poppers: Int!
+  proError: Int!
+  proErrorRecord: [ProErrorRecord]
+  round: Int!
+  scoreState: ScoreState!
+  scorelist: Scorelist!
+  shooter: Shooter!
+  time: Float!
+  totalScore: Int!
+}
+
+"""Score state"""
+enum ScoreState {
+  DNF
+  DQ
+  HAVE_NOT_SCORED_YET
+  SCORED
+}
+
+"""The the collection of Scorelist"""
+type Scoreboard {
+  createdAt: DateTime!
+  id: Int!
+  isLocked: Boolean!
+  name: String!
+  scorelists: [Scorelist!]!
+}
+
+"""The the collection of Score"""
+type Scorelist {
+  createdAt: DateTime!
+  id: Int!
+  isLocked: Boolean!
+  rounds: Int!
+  scoreboard: Scoreboard!
+  scores: [Score!]!
+  stage: Stage!
 }
 
 type Shooter {
@@ -64,6 +186,9 @@ enum StageType {
 }
 
 type Subscription {
+  subscribeToScoreUpdate: Boolean!
+  subscribeToScoreboardUpdate: Boolean!
+  subscribeToScorelistUpdate: Boolean!
   subscribeToShooterUpdate: Boolean!
   subscribeToStageUpdate: Boolean!
 }

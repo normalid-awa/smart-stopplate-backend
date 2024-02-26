@@ -9,7 +9,7 @@ import { WebSocketServer } from "ws";
 import { useServer } from "graphql-ws/lib/use/ws";
 const fs = require("fs");
 
-const port = 8080;
+const port = process.env.GQL_PORT;
 
 // export const server = new ApolloServer({
 //     schema,
