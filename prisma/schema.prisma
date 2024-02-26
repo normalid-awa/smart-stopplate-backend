@@ -105,7 +105,6 @@ model Score {
 
   poppers Int @default(0)
 
-  proError       Int        @default(0)
   proErrorRecord ProError[]
 
   totalScore Int @default(0)

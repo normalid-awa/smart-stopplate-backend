@@ -85,7 +85,6 @@ export interface NexusGenObjects {
     miss: number; // Int!
     noShoots: number; // Int!
     poppers: number; // Int!
-    proError: number; // Int!
     round: number; // Int!
     scoreState: NexusGenEnums['ScoreState']; // ScoreState!
     time: number; // Float!

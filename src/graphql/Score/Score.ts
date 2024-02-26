@@ -65,7 +65,24 @@ export const Score = objectType({
 
         t.nonNull.int("poppers");
 
-        t.nonNull.int("proError");
+        t.nonNull.int("proError", {
+            async resolve(src, args, ctx, info) {
+                let pro = await ctx.prisma.proError.findMany({
+                    where: {
+                        scoreId: src.id,
+                    },
+                    select: {
+                        count: true,
+                        id: true,
+                    }
+                });
+                let result = 0;
+                pro.forEach((v) => {
+                    result += v.count;
+                });
+                return result;
+            },
+        });
 
         t.list.field("proErrorRecord", {
             type: "ProErrorRecord",
@@ -91,7 +108,20 @@ export const Score = objectType({
         });
 
         t.nonNull.int("totalScore", {
-            resolve(src, args, ctx, info) {
+            async resolve(src, args, ctx, info) {
+                let pro = await ctx.prisma.proError.findMany({
+                    where: {
+                        scoreId: src.id,
+                    },
+                    select: {
+                        count: true,
+                        id: true,
+                    },
+                });
+                let result = 0;
+                pro.forEach((v) => {
+                    result += v.count;
+                });
                 return calc_score(
                     src.alphaZone,
                     src.charlieZone,
@@ -99,7 +129,7 @@ export const Score = objectType({
                     src.miss,
                     src.poppers,
                     src.noShoots,
-                    src.proError
+                    result
                 );
             },
         });
@@ -107,7 +137,20 @@ export const Score = objectType({
         t.nonNull.float("time");
 
         t.nonNull.float("hitFactor", {
-            resolve(src, args, ctx, info) {
+            async resolve(src, args, ctx, info) {
+                let pro = await ctx.prisma.proError.findMany({
+                    where: {
+                        scoreId: src.id,
+                    },
+                    include: {
+                        proErrorItem: true,
+                        score: true,
+                    },
+                });
+                let result = 0;
+                pro.forEach((v) => {
+                    result += v.count;
+                });
                 return calc_hf(
                     calc_score(
                         src.alphaZone,
@@ -116,7 +159,7 @@ export const Score = objectType({
                         src.miss,
                         src.poppers,
                         src.noShoots,
-                        src.proError
+                        result
                     ),
                     src.time
                 );
@@ -247,7 +290,6 @@ export const ScoreMutation = extendType({
                         noShoots: args.noShoots,
                         poppers: args.poppers,
                         miss: args.miss,
-                        proError: args.proError,
                         totalScore: score,
                         time: args.time,
                         hitFactor: calc_hf(score, args.time),
@@ -326,7 +368,6 @@ export const ScoreMutation = extendType({
                         noShoots: 0,
                         miss: 0,
                         poppers: 0,
-                        proError: 0,
                         totalScore: 0,
                         time: 0,
                         hitFactor: 0,
