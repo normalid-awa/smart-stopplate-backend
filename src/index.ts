@@ -8,7 +8,7 @@ import { createServer } from "https";
 import { WebSocketServer } from "ws";
 import { useServer } from "graphql-ws/lib/use/ws";
 const fs = require("fs");
-
+const env = require("dotenv").config();
 const port = process.env.GQL_PORT;
 
 // export const server = new ApolloServer({
@@ -36,10 +36,25 @@ const yoga = createYoga({
 
 // Get NodeJS Server from Yoga
 // const httpServer = createServer(yoga);
+
+let CERT_STRING;
+try {
+    CERT_STRING = fs.readFileSync(process.env.SSL_CERT_LOCATE);
+} catch (e) {
+    CERT_STRING = "";
+}
+
+let KEY_STRING;
+try {
+    KEY_STRING = fs.readFileSync(process.env.SSL_KEY_LOCATE);
+} catch (e) {
+    KEY_STRING = "";
+}
+
 const httpServer = createServer(
     {
-        cert: fs.readFileSync(process.env.SSL_CERT_LOCATE),
-        key: fs.readFileSync(process.env.SSL_KEY_LOCATE),
+        cert: CERT_STRING,
+        key: KEY_STRING,
     },
     yoga
 );
