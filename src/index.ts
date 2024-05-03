@@ -4,7 +4,8 @@ import { context } from "./context";
 // import { GraphQLServer } from "graphql-yoga";
 import { createSchema, createYoga } from "graphql-yoga";
 // import { createServer } from "node:http";
-import { createServer } from "https";
+import { createServer as createHttpsServer } from "https";
+import { createServer as createHttpServer } from "http";
 import { WebSocketServer } from "ws";
 import { useServer } from "graphql-ws/lib/use/ws";
 const fs = require("fs");
@@ -51,13 +52,21 @@ try {
     KEY_STRING = "";
 }
 
-const httpServer = createServer(
-    {
-        cert: CERT_STRING,
-        key: KEY_STRING,
-    },
-    yoga
-);
+let httpServer;
+if (process.env.USE_HTTPS == "true") {
+    httpServer = createHttpsServer(
+        {
+            cert: CERT_STRING,
+            key: KEY_STRING,
+        },
+        yoga
+    );
+} else {
+    httpServer = createHttpServer(
+        yoga
+    );
+}
+
 // Create WebSocket server instance from our Node server
 const wsServer = new WebSocketServer({
     server: httpServer,
